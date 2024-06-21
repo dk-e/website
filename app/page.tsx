@@ -9,10 +9,9 @@ import { discordId } from "../utils/constants";
 
 export interface Props {
   lanyard: LanyardData;
-  location: string;
 }
 
-export default function Home(props: Props) {
+export default function Home(props: any) {
   const lanyard = useLanyardWS(discordId, {
     initialData: props.lanyard,
   })!;
