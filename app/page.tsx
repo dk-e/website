@@ -1,113 +1,248 @@
+"use client";
+import { motion } from "framer-motion";
+import Link from "next/link";
 import Image from "next/image";
+import { SiSpotify } from "react-icons/si";
+import { useLanyardWS, type Data as LanyardData } from "use-lanyard";
+import { MessageGroup } from "../components/message";
+import { discordId } from "../utils/constants";
 
-export default function Home() {
+export interface Props {
+  lanyard: LanyardData;
+  location: string;
+}
+
+export default function Home(props: Props) {
+  const lanyard = useLanyardWS(discordId, {
+    initialData: props.lanyard,
+  })!;
+
+  const status = lanyard?.discord_status ?? "offline";
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+    <main className="mx-auto max-w-xl px-3 pb-16 pt-24">
+      <motion.ul
+        transition={{
+          staggerChildren: 0.3,
+          delayChildren: 0.3,
+        }}
+        initial="hidden"
+        animate="show"
+        className="space-y-8"
+      >
+        <MessageGroup
+          messages={[
+            {
+              key: "intro",
+              content: (
+                <>
+                  Hi there, I&apos;m <span className="font-serif">Dan</span>.
+                  I&apos;m a fullstack dev (barely)
+                </>
+              ),
+            },
+            {
+              key: "work",
+              content: (
+                <>
+                  Currently I&apos;m working on{" "}
+                  <Link
+                    target="_blank"
+                    href="https://remor.se"
+                    className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
+                  >
+                    remorse
+                  </Link>
+                  . It&apos;s a file upload service designed for sharex &amp;
+                  discord with some cool domains.
+                </>
+              ),
+            },
+            {
+              key: "remorse",
+              content: (
+                <>
+                  <span className="italic">
+                    (if you want to share images with friends &amp; show off
+                    cool domains, try it out when we release
+                  </span>{" "}
+                  😊<span className="italic">)</span>
+                </>
+              ),
+            },
+          ]}
         />
-      </div>
+        <MessageGroup
+          messages={[
+            ...(lanyard?.spotify
+              ? [
+                  {
+                    key: "music-playing",
+                    content: (
+                      <div className="space-y-3">
+                        <p>
+                          I listen to a lot of music. Everything from
+                          underground to rock &amp; indie. Currently listening
+                          to this on Spotify:
+                        </p>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+                        <Link
+                          href={`https://open.spotify.com/track/${lanyard.spotify.track_id}`}
+                          className="group relative !mb-1 block w-fit min-w-[300px] overflow-hidden rounded-xl rounded-bl-md p-3"
+                          target="_blank"
+                        >
+                          <div className="absolute -inset-[1px] z-20 rounded-xl rounded-bl-md border-[3px] border-black/10 dark:border-white/20"></div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+                          <div className="absolute inset-0">
+                            <div className="absolute inset-0 z-10 bg-white/70 group-hover:bg-white/80 dark:bg-neutral-800/80 dark:group-hover:bg-neutral-800/90"></div>
+                            <Image
+                              src={lanyard.spotify.album_art_url ?? ""}
+                              width={1920}
+                              height={1080}
+                              alt="Album art"
+                              aria-hidden
+                              className="absolute top-1/2 -translate-y-1/2 scale-[3] blur-3xl saturate-[15] dark:saturate-[10]"
+                            />
+                          </div>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+                          <div className="relative z-10 flex items-center space-x-4 pr-8">
+                            <Image
+                              src={lanyard.spotify.album_art_url ?? ""}
+                              width={1920}
+                              height={1080}
+                              alt="Album art"
+                              className="size-12 rounded-md border-2"
+                            />
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+                            <div className="space-y-1">
+                              <p className="line-clamp-1">
+                                <strong>{lanyard.spotify.song}</strong>
+                              </p>
+                              <p className="line-clamp-1 text-neutral-800 dark:text-white/60">
+                                {lanyard.spotify.artist.split("; ").join(", ")}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="absolute right-4 top-4 z-10">
+                            <SiSpotify className="size-4 text-neutral-900/80 dark:text-white/50" />
+                          </div>
+                        </Link>
+                      </div>
+                    ),
+                  },
+                ]
+              : [
+                  {
+                    key: "music",
+                    content: (
+                      <p>
+                        I listen to a lot of music, I like everything from
+                        underground all the way to rock &amp; indie. If you come
+                        back to this page later, you might see what I&apos;m
+                        listening to on Spotify, in realtime.
+                      </p>
+                    ),
+                  },
+                ]),
+          ]}
+        />
+
+        <MessageGroup
+          messages={[
+            {
+              key: "blog-soon",
+              content: (
+                <p>
+                  I&apos;m also currently working on my blog which will be
+                  dynamically displayed here when ready.{" "}
+                  <Link
+                    href={"https://blog-da.niel.lol"}
+                    className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
+                    target="_blank"
+                  >
+                    Check it out
+                  </Link>{" "}
+                  ✍️
+                </p>
+              ),
+            },
+          ]}
+        />
+
+        <MessageGroup
+          messages={[
+            {
+              key: "contact",
+              content: <>Want to reach me?</>,
+            },
+            {
+              key: "discord",
+              content: (
+                <>
+                  My Discord is <code>@sexuals</code> - I&apos;m currently{" "}
+                  <span
+                    className={
+                      {
+                        dnd: "text-red-600 dark:text-red-400",
+                        idle: "text-amber-500",
+                        online: "text-green-500",
+                        offline: "text-blurple",
+                      }[status]
+                    }
+                  >
+                    {
+                      {
+                        dnd: "in dnd",
+                        idle: "idle",
+                        online: "online",
+                        offline: "offline",
+                      }[status]
+                    }
+                  </span>
+                </>
+              ),
+            },
+            {
+              key: "github",
+              content: (
+                <>
+                  Also check out my{" "}
+                  <Link
+                    href="https://git.new/rich"
+                    className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
+                    target="_blank"
+                  >
+                    GitHub
+                  </Link>{" "}
+                  :)
+                </>
+              ),
+            },
+          ]}
+        />
+
+        <MessageGroup
+          messages={[
+            {
+              key: "finally",
+              content: (
+                <>
+                  Finally, this site is basically a 1:1 from{" "}
+                  <Link
+                    href="https://github.com/alii"
+                    className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
+                    target="_blank"
+                  >
+                    alii
+                  </Link>{" "}
+                  over on github so shoutout to him for open sourcing this.
+                </>
+              ),
+            },
+          ]}
+        />
+      </motion.ul>
     </main>
   );
 }
