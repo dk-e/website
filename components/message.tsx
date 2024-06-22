@@ -2,6 +2,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import dan from "../public/dan.jpg";
 
 export interface MessageGroupProps {
   messages: Array<{ key: string; content: ReactNode }>;
@@ -67,7 +68,7 @@ export function MessageGroup({ messages }: MessageGroupProps) {
       className="flex items-end space-x-2"
     >
       <Image
-        src={"/game.jpg"}
+        src={dan.src}
         width={1920}
         height={1080}
         className="size-8 rounded-full"
