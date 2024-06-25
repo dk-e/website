@@ -224,6 +224,33 @@ export default function Home(props: any) {
         <MessageGroup
           messages={[
             {
+              key: "yt",
+              content: (
+                <>
+                  Just one more thing that i found cool... i managed to get {""}
+                  <Link
+                    href="https://youtube.com/@板"
+                    className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50 text-red-500 text-glow-red-500"
+                    target="_blank"
+                  >
+                    @板
+                  </Link>{" "}
+                  on youtube, which is pretty cool imo.
+                </>
+              ),
+            },
+            {
+              key: "yt-2",
+              content: (
+                <>This is definitly not supposed to be possible, but it is.</>
+              ),
+            },
+          ]}
+        />
+
+        <MessageGroup
+          messages={[
+            {
               key: "finally",
               content: (
                 <>
