@@ -33,10 +33,10 @@ export async function generateMetadata({
       description: post.metadata.description,
       publishedTime,
       type: "article",
-      url: `https://da.niel.lol/blog/${post.slug}`,
+      url: `https://daniel.rest/blog/${post.slug}`,
       images: [
         {
-          url: `https://da.niel.lol/og/blog?title=${post.metadata.title}&top=${publishedTime}`,
+          url: `https://daniel.rest/og/blog?title=${post.metadata.title}&top=${publishedTime}`,
         },
       ],
     },
@@ -46,7 +46,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       creator: "@lootings",
       images: [
-        `https://da.niel.lol/og/blog?title=${post.metadata.title}&top=${publishedTime}`,
+        `https://daniel.rest/og/blog?title=${post.metadata.title}&top=${publishedTime}`,
       ],
     },
   };
@@ -73,10 +73,10 @@ export default function Post({ params }: { params: { slug: string } }) {
                 datePublished: post.metadata.date,
                 dateModified: post.metadata.date,
                 description: post.metadata.description,
-                image: `https://da.niel.lol/og/blog?title=${
+                image: `https://daniel.rest/og/blog?title=${
                   post.metadata.title
                 }&top=${formatDate(post.metadata.date)}`,
-                url: `https://da.niel.lol/blog/${post.slug}`,
+                url: `https://daniel.rest/blog/${post.slug}`,
                 author: {
                   "@type": "Person",
                   name: "Dan",

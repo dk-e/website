@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: "https://da.niel.lol/og/home?title=dan's+blog",
+        url: "https://daniel.rest/og/home?title=dan's+blog",
       },
     ],
   },

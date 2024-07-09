@@ -7,7 +7,7 @@ import { clx } from "../utils/utils";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://da.niel.lol"),
+  metadataBase: new URL("https://daniel.rest"),
   title: {
     default: "Dan",
     template: "%s | Dan",
@@ -16,11 +16,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Dan",
     description: "Developer, cardist and maker of things.",
-    url: "https://da.niel.lol",
+    url: "https://daniel.rest",
     siteName: "Dan",
     locale: "en_US",
     type: "website",
-    images: ["https://da.niel.lol/og/home"],
+    images: ["https://daniel.rest/og/home"],
   },
   robots: {
     index: true,

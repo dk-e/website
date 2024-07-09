@@ -97,10 +97,10 @@ export async function GET(request: Request) {
                   fontSize: "28px",
                 }}
               >
-                da.niel.lol
+                daniel.rest
               </p>
               <img
-                src="https://da.niel.lol/dan.jpg"
+                src="https://daniel.rest/dan.jpg"
                 alt="dan's avatar"
                 width={70}
                 height={70}
