@@ -240,25 +240,31 @@ export default function Home(props: any) {
         <MessageGroup
           messages={[
             {
-              key: "yt",
+              key: "coding-journey",
               content: (
                 <>
-                  Just one more thing that i found cool... i managed to get {""}
-                  <Link
-                    href="https://youtube.com/@板"
-                    className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50 text-red-500 text-glow-red-500"
-                    target="_blank"
-                  >
-                    @板
-                  </Link>{" "}
-                  on youtube, which is pretty cool imo.
+                  A bit more about me - I started coding in python ~3 years ago.
+                  I never really understood it back then.
                 </>
               ),
             },
             {
-              key: "yt-2",
+              key: "web-dev",
               content: (
-                <>This is definitly not supposed to be possible, but it is.</>
+                <>
+                  I then moved onto web development and started working with
+                  React, Next.js, and TailwindCSS.
+                </>
+              ),
+            },
+            {
+              key: "code-3",
+              content: (
+                <>
+                  I&apos;ve been serious about SWE for ~6 months and would like
+                  to make it my career. I also have a strong interest in
+                  cybersecurity.
+                </>
               ),
             },
           ]}
