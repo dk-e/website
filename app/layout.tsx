@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ViewTransitions } from "next-view-transitions";
+import { clx } from "../utils/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,18 +32,26 @@ export const metadata: Metadata = {
   twitter: {
     title: "Dan",
     card: "summary_large_image",
-    creator: "@nexxeln",
+    creator: "@lootings",
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <ViewTransitions>
+      <html
+        lang="en"
+        className={clx(
+          "bg-neutral-100 text-black dark:bg-neutral-950 dark:text-white",
+          inter.className
+        )}
+      >
+        <body>{children}</body>
+      </html>
+    </ViewTransitions>
   );
 }
