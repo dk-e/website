@@ -154,6 +154,7 @@ export default function Home(props: any) {
               content: (
                 <p>
                   I also have a blog which I will try to post on fairly often.{" "}
+                  <br />
                   <Link
                     href={"/blog"}
                     className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
@@ -219,7 +220,7 @@ export default function Home(props: any) {
                     className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
                     target="_blank"
                   >
-                    GitHub
+                    github
                   </Link>{" "}
                   and{" "}
                   <Link
@@ -227,9 +228,9 @@ export default function Home(props: any) {
                     className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
                     target="_blank"
                   >
-                    X
+                    x.com
                   </Link>{" "}
-                  (twitter) :)
+                  :)
                 </>
               ),
             },
