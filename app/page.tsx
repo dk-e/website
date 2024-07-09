@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { SiSpotify } from "react-icons/si";
 import { useLanyardWS, type Data as LanyardData } from "use-lanyard";
@@ -150,19 +150,26 @@ export default function Home(props: any) {
         <MessageGroup
           messages={[
             {
-              key: "blog-soon",
+              key: "blog-intro",
               content: (
                 <p>
-                  I&apos;m also currently working on my blog which will be
-                  dynamically displayed here when ready.{" "}
+                  I also have a blog which I will try to post on fairly often.{" "}
                   <Link
-                    href={"https://blog-da.niel.lol"}
+                    href={"/blog"}
                     className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
-                    target="_blank"
                   >
                     Check it out
                   </Link>{" "}
                   ✍️
+                </p>
+              ),
+            },
+            {
+              key: "blog-2",
+              content: (
+                <p>
+                  I will try to dynamically display the blogs in this section
+                  when I get around to it.
                 </p>
               ),
             },
@@ -203,7 +210,7 @@ export default function Home(props: any) {
               ),
             },
             {
-              key: "github",
+              key: "socials",
               content: (
                 <>
                   Also check out my{" "}
@@ -214,7 +221,15 @@ export default function Home(props: any) {
                   >
                     GitHub
                   </Link>{" "}
-                  :)
+                  and{" "}
+                  <Link
+                    href="https://twitter.com/lootings"
+                    className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
+                    target="_blank"
+                  >
+                    X
+                  </Link>{" "}
+                  (twitter) :)
                 </>
               ),
             },
