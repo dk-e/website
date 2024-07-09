@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import typography from "@tailwindcss/typography";
 const {
   default: flattenColorPalette,
 } = require("tailwindcss/lib/util/flattenColorPalette");
@@ -26,22 +27,6 @@ const config: Config = {
     require("@tailwindcss/forms"),
     {
       handler: (tw) => {
-        tw.matchComponents(
-          {
-            "bg-grid": (value) => ({
-              backgroundSize: "90px 90px",
-              backgroundImage: `
-								linear-gradient(to right, ${value} 1px, transparent 1px),
-								linear-gradient(to bottom, ${value} 1px, transparent 1px)
-							`,
-            }),
-          },
-          {
-            values: flattenColorPalette(tw.theme("colors")),
-            type: "color",
-          }
-        );
-
         tw.matchUtilities(
           {
             "text-glow": (value) => ({
@@ -80,6 +65,7 @@ const config: Config = {
         );
       },
     },
+    typography,
   ],
 };
 export default config;
