@@ -5,11 +5,24 @@ import Image from "next/image";
 import { SiSpotify } from "react-icons/si";
 import { useLanyardWS, type Data as LanyardData } from "use-lanyard";
 import { MessageGroup } from "../components/message";
-import { discordId } from "../utils/constants";
+import {
+  daysSinceStartedCoding,
+  discordId,
+  yearsSinceStartedCoding,
+} from "../utils/constants";
 
 export interface Props {
   lanyard: LanyardData;
 }
+
+const Tooltip = ({ text, children }: any) => (
+  <span className="relative group">
+    {children}
+    <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 p-2 bg-neutral-800 text-white text-sm rounded transition-opacity duration-300 opacity-0 group-hover:opacity-100 pointer-events-none min-w-max whitespace-nowrap">
+      {text}
+    </span>
+  </span>
+);
 
 export default function Home(props: any) {
   const lanyard = useLanyardWS(discordId, {
@@ -243,8 +256,13 @@ export default function Home(props: any) {
               key: "coding-journey",
               content: (
                 <>
-                  A bit more about me - I started coding in python ~3 years ago.
-                  I never really understood it back then.
+                  A bit more about me - I started coding in python ~
+                  <Tooltip text={`${daysSinceStartedCoding} days`}>
+                    <span className="underline decoration-dotted">
+                      {yearsSinceStartedCoding}
+                    </span>
+                  </Tooltip>{" "}
+                  years ago. However, I never really understood it back then.
                 </>
               ),
             },
@@ -252,8 +270,9 @@ export default function Home(props: any) {
               key: "web-dev",
               content: (
                 <>
-                  I then moved onto web development and started working with
-                  React, Next.js, and TailwindCSS.
+                  I then moved onto web development in late 2022 and started
+                  working with HTML and CSS. I now work with React, TypeScript,
+                  and TailwindCSS.
                 </>
               ),
             },

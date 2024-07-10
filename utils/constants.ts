@@ -30,3 +30,15 @@ export const daysUntilBirthday = RelativeTimeFormatter.formatToParts(
   ),
   "day"
 )[1]!.value.toString();
+
+export const dayStartedCoding = new Date("2020-10-01");
+export const yearsSinceStartedCoding = new Date().getUTCFullYear() - 2020;
+const currentDate = new Date();
+
+// Calculate the difference in time (in milliseconds)
+const timeDifference = Number(currentDate) - Number(dayStartedCoding);
+
+// Convert time difference from milliseconds to days
+export const daysSinceStartedCoding = Math.floor(
+  timeDifference / (1000 * 60 * 60 * 24)
+);
