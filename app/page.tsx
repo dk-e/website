@@ -256,7 +256,7 @@ export default function Home(props: any) {
               key: "coding-journey",
               content: (
                 <>
-                  A bit more about me - I started coding in python ~
+                  I started coding in python ~
                   <Tooltip text={`${daysSinceStartedCoding} days`}>
                     <span className="underline decoration-dotted">
                       {yearsSinceStartedCoding}
