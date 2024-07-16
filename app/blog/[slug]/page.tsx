@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDX } from "../[slug]/mdx";
-import { getBlogPostBySlug } from "../../../utils/blog";
+import { getBlogPostBySlug } from "../../../lib/blog";
 import { Undo2 } from "lucide-react";
 import { Link } from "next-view-transitions";
 

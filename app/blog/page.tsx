@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
-import { getBlogPosts } from "../../utils/blog";
+import { getBlogPosts } from "../../lib/blog";
 import { Undo2 } from "lucide-react";
 
 export const metadata: Metadata = {

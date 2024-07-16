@@ -9,7 +9,7 @@ import {
   daysSinceStartedCoding,
   discordId,
   yearsSinceStartedCoding,
-} from "../utils/constants";
+} from "../lib/constants";
 
 export interface Props {
   lanyard: LanyardData;
