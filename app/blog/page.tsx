@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
 import { getBlogPosts } from "../../lib/blog";
-import { Suspense } from "react";
-import { ViewCounter } from "../blog/view-counter";
-import { redis } from "../../lib/redis";
 import { Undo2 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -58,10 +55,6 @@ export default function BlogPage() {
                         year: "numeric",
                       })
                       .toLowerCase()}
-                    <Suspense>
-                      {" • "}
-                      <Views slug={post.slug} />
-                    </Suspense>
                   </p>
                 </div>
               </Link>
@@ -71,26 +64,4 @@ export default function BlogPage() {
       </main>
     </body>
   );
-}
-
-async function Views({ slug }: { slug: string }) {
-  let allViews = [];
-
-  try {
-    const data = await redis.get("views");
-
-    if (data) {
-      // @ts-ignore
-      const parsedData = JSON.parse(data);
-      if (Array.isArray(parsedData)) {
-        allViews = parsedData;
-      } else {
-        console.error("Fetched views data is not an array:", parsedData);
-      }
-    }
-  } catch (error) {
-    console.error("Error fetching or parsing views data:", error);
-  }
-
-  return <ViewCounter slug={slug} allViews={allViews} />;
 }

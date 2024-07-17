@@ -4,9 +4,6 @@ import { MDX } from "../[slug]/mdx";
 import { getBlogPostBySlug } from "../../../lib/blog";
 import { Undo2 } from "lucide-react";
 import { Link } from "next-view-transitions";
-import { ViewCounter } from "../../blog/view-counter";
-import { redis } from "../../../lib/redis";
-import { Suspense } from "react";
 
 const formatDate = (date: string) => {
   return new Date(date).toLocaleDateString("en-US", {
@@ -102,9 +99,6 @@ export default function Post({ params }: { params: { slug: string } }) {
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
               {formatDate(post.metadata.date)}
             </p>
-            <Suspense>
-              <Views slug={post.slug} />
-            </Suspense>
           </div>
 
           <article className="prose prose-neutral dark:prose-invert">
@@ -114,43 +108,4 @@ export default function Post({ params }: { params: { slug: string } }) {
       </main>
     </body>
   );
-}
-
-async function Views({ slug }: { slug: string }) {
-  let viewsData = [];
-
-  try {
-    const data = await redis.get("views");
-
-    if (data) {
-      // @ts-ignore
-      const parsedData = JSON.parse(data);
-      if (Array.isArray(parsedData)) {
-        viewsData = parsedData;
-      } else {
-        console.error("Fetched views data is not an array:", parsedData);
-      }
-    }
-  } catch (error) {
-    console.error("Error fetching or parsing views data:", error);
-  }
-
-  if (!Array.isArray(viewsData)) {
-    viewsData = [];
-  }
-
-  const postViews = viewsData.find((view) => view.slug === slug);
-  if (postViews) {
-    postViews.views += 1;
-  } else {
-    viewsData.push({ slug, views: 1 });
-  }
-
-  try {
-    await redis.set("views", JSON.stringify(viewsData));
-  } catch (error) {
-    console.error("Error saving views data:", error);
-  }
-
-  return <ViewCounter slug={slug} allViews={viewsData} />;
 }
