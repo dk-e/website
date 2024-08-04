@@ -229,7 +229,7 @@ export default function Home(props: any) {
                 <>
                   Also check out my{" "}
                   <Link
-                    href="https://git.new/dank"
+                    href="https://git.new/dan-"
                     className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
                     target="_blank"
                   >
