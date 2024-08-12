@@ -46,6 +46,7 @@ export default function RootLayout({
       <html
         lang="en"
         className={clx(
+          inter.className,
           "bg-neutral-100 text-black dark:bg-neutral-950 dark:text-white"
         )}
       >
