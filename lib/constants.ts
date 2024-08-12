@@ -1,3 +1,5 @@
+// Existing constants
+
 export const UKTimeFormatter = new Intl.DateTimeFormat(undefined, {
   timeZone: "Europe/London",
   hour: "numeric",
@@ -41,4 +43,27 @@ const timeDifference = Number(currentDate) - Number(dayStartedCoding);
 // Convert time difference from milliseconds to days
 export const daysSinceStartedCoding = Math.floor(
   timeDifference / (1000 * 60 * 60 * 24)
+);
+
+function daysBetweenDates(startDate: Date, endDate: Date): number {
+  const timeDifference = Number(endDate) - Number(startDate);
+  return Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+}
+
+export const seriousAboutSWE = new Date("2024-02-01");
+export const daysSinceSeriousAboutSWE = daysBetweenDates(
+  seriousAboutSWE,
+  currentDate
+);
+
+// Function to calculate months between two dates
+function monthsBetweenDates(startDate: Date, endDate: Date): number {
+  const yearsDifference = endDate.getFullYear() - startDate.getFullYear();
+  const monthsDifference = endDate.getMonth() - startDate.getMonth();
+  return yearsDifference * 12 + monthsDifference;
+}
+
+export const monthsSinceSeriousAboutSWE = monthsBetweenDates(
+  seriousAboutSWE,
+  currentDate
 );
