@@ -1,18 +1,36 @@
-"use client";
-import { motion } from "framer-motion";
 import { Link } from "next-view-transitions";
-import Image from "next/image";
-import { SiSpotify } from "react-icons/si";
-import { useLanyardWS, type Data as LanyardData } from "use-lanyard";
-import { MessageGroup } from "../components/message";
+import { getBlogPosts } from "../lib/blog";
+import Flag from "react-flagkit";
 import {
+  age,
   daysSinceStartedCoding,
-  discordId,
   yearsSinceStartedCoding,
+  monthsSinceSeriousAboutSWE,
+  daysSinceSeriousAboutSWE,
 } from "../lib/constants";
+import ConfettiText from "../components/confetti";
+import Music from "../components/music";
+import { FaInstagram, FaGithub } from "react-icons/fa";
+import { BsTwitterX } from "react-icons/bs";
 
-export interface Props {
-  lanyard: LanyardData;
+function LocationIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-5 w-5"
+    >
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
 }
 
 const Tooltip = ({ text, children }: any) => (
@@ -24,292 +42,134 @@ const Tooltip = ({ text, children }: any) => (
   </span>
 );
 
-export default function Home(props: any) {
-  const lanyard = useLanyardWS(discordId, {
-    initialData: props.lanyard,
-  })!;
-
-  const status = lanyard?.discord_status ?? "offline";
+export default function Home() {
+  const posts = getBlogPosts()
+    .sort(
+      (a, b) =>
+        new Date(b.metadata.date).getTime() -
+        new Date(a.metadata.date).getTime()
+    )
+    .slice(0, 4);
 
   return (
-    <main className="mx-auto max-w-xl px-3 pb-16 pt-24">
-      <motion.ul
-        transition={{
-          staggerChildren: 0.3,
-          delayChildren: 0.3,
-        }}
-        initial="hidden"
-        animate="show"
-        className="space-y-8"
-      >
-        <MessageGroup
-          messages={[
-            {
-              key: "intro",
-              content: (
-                <>
-                  Hi there, I&apos;m <span className="font-serif">Dan</span>.
-                  I&apos;m a fullstack dev (barely)
-                </>
-              ),
-            },
-            {
-              key: "work",
-              content: (
-                <>
-                  Currently I&apos;m working on{" "}
-                  <Link
-                    target="_blank"
-                    href="https://remor.se"
-                    className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
-                  >
-                    remorse
-                  </Link>
-                  . It&apos;s a file upload service designed for sharex &amp;
-                  discord with some cool domains.
-                </>
-              ),
-            },
-            {
-              key: "remorse",
-              content: (
-                <>
-                  <span className="italic">
-                    (if you want to share images with friends &amp; show off
-                    cool domains, try it out when we release
-                  </span>{" "}
-                  😊<span className="italic">)</span>
-                </>
-              ),
-            },
-          ]}
-        />
-        <MessageGroup
-          messages={[
-            ...(lanyard?.spotify
-              ? [
-                  {
-                    key: "music-playing",
-                    content: (
-                      <div className="space-y-3">
-                        <p>
-                          I listen to a lot of music. Everything from
-                          underground to rock &amp; indie. Currently listening
-                          to this on Spotify:
-                        </p>
+    <main className="text-left">
+      <h1 className="mb-4 text-2xl font-medium tracking-tighter">
+        a bit about me
+      </h1>
 
-                        <Link
-                          href={`https://open.spotify.com/track/${lanyard.spotify.track_id}`}
-                          className="group relative !mb-1 block w-fit min-w-[300px] overflow-hidden rounded-xl rounded-bl-md p-3"
-                          target="_blank"
-                        >
-                          <div className="absolute -inset-[1px] z-20 rounded-xl rounded-bl-md border-[3px] border-black/10 dark:border-white/20"></div>
+      <div className="flex items-center gap-2 mb-2">
+        <LocationIcon />
+        <Flag country="GB" size={20} draggable="false" />
+      </div>
 
-                          <div className="absolute inset-0">
-                            <div className="absolute inset-0 z-10 bg-white/70 group-hover:bg-white/80 dark:bg-neutral-800/80 dark:group-hover:bg-neutral-800/90"></div>
-                            <Image
-                              src={lanyard.spotify.album_art_url ?? ""}
-                              width={1920}
-                              height={1080}
-                              alt="Album art"
-                              aria-hidden
-                              className="absolute top-1/2 -translate-y-1/2 scale-[3] blur-3xl saturate-[15] dark:saturate-[10]"
-                            />
-                          </div>
+      <p className="prose prose-neutral dark:prose-invert">
+        hey, i&apos;m dan. i&apos;m a {age} y/o software engineer (barely) based
+        in the{" "}
+        <span className="font-medium underline decoration-wavy">
+          <ConfettiText text="UK" emoji="☕" scalar={5} />
+        </span>
+        . i love tinkering with things to make them just how i like. tech wise i
+        enjoy building for the web and i live on the terminal!
+      </p>
 
-                          <div className="relative z-10 flex items-center space-x-4 pr-8">
-                            <Image
-                              src={lanyard.spotify.album_art_url ?? ""}
-                              width={1920}
-                              height={1080}
-                              alt="Album art"
-                              className="size-12 rounded-md border-2"
-                            />
+      <h3 className="mb-2 mt-4 text-xl font-medium">music</h3>
+      <p className="prose prose-neutral dark:prose-invert">
+        i&apos;m a big music guy. i like anything from underground/opium to rock
+        & indie, if im listening at the minute you will be able to see this
+        below! cool right?
+      </p>
+      <Music />
 
-                            <div className="space-y-1">
-                              <p className="line-clamp-1">
-                                <strong>{lanyard.spotify.song}</strong>
-                              </p>
-                              <p className="line-clamp-1 text-neutral-800 dark:text-white/60">
-                                {lanyard.spotify.artist.split("; ").join(", ")}
-                              </p>
-                            </div>
-                          </div>
+      <h3 className="mb-2 mt-4 text-xl font-medium">blog</h3>
 
-                          <div className="absolute right-4 top-4 z-10">
-                            <SiSpotify className="size-4 text-neutral-900/80 dark:text-white/50" />
-                          </div>
-                        </Link>
-                      </div>
-                    ),
-                  },
-                ]
-              : [
-                  {
-                    key: "music",
-                    content: (
-                      <p>
-                        I listen to a lot of music, I like everything from
-                        underground all the way to rock &amp; indie. If you come
-                        back to this page later, you might see what I&apos;m
-                        listening to on Spotify, in realtime.
-                      </p>
-                    ),
-                  },
-                ]),
-          ]}
-        />
+      <div className="flex flex-col gap-4">
+        {posts.map((post) => (
+          <Link key={post.slug} href={`/blog/${post.slug}`} className="">
+            <div className="flex w-full justify-between">
+              <p className="font-medium underline decoration-neutral-400 decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600">
+                {post.metadata.title.toLowerCase()}
+              </p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                {new Date(post.metadata.date)
+                  .toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })
+                  .toLowerCase()}
+              </p>
+            </div>
+          </Link>
+        ))}
 
-        <MessageGroup
-          messages={[
-            {
-              key: "blog-intro",
-              content: (
-                <p>
-                  I also have a blog which I will try to post on fairly often.{" "}
-                  <br />
-                  <Link
-                    href={"/blog"}
-                    className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
-                  >
-                    Check it out
-                  </Link>{" "}
-                  ✍️
-                </p>
-              ),
-            },
-            {
-              key: "blog-2",
-              content: (
-                <p>
-                  I will try to dynamically display the blogs in this section
-                  when I get around to it.
-                </p>
-              ),
-            },
-          ]}
-        />
+        <Link
+          href="/blog"
+          className="decoration-neutral-400 font-medium underline decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600"
+        >
+          all posts →
+        </Link>
+      </div>
 
-        <MessageGroup
-          messages={[
-            {
-              key: "contact",
-              content: <>Want to reach me?</>,
-            },
-            {
-              key: "discord",
-              content: (
-                <>
-                  My Discord is <code>@sexuals</code> - I&apos;m currently{" "}
-                  <span
-                    className={
-                      {
-                        dnd: "text-red-600 dark:text-red-400",
-                        idle: "text-amber-500",
-                        online: "text-green-500",
-                        offline: "text-blurple",
-                      }[status]
-                    }
-                  >
-                    {
-                      {
-                        dnd: "in dnd",
-                        idle: "idle",
-                        online: "online",
-                        offline: "offline",
-                      }[status]
-                    }
-                  </span>
-                </>
-              ),
-            },
-            {
-              key: "socials",
-              content: (
-                <>
-                  Also check out my{" "}
-                  <Link
-                    href="https://git.new/dan-"
-                    className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
-                    target="_blank"
-                  >
-                    github
-                  </Link>{" "}
-                  and{" "}
-                  <Link
-                    href="https://twitter.com/lootings"
-                    className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
-                    target="_blank"
-                  >
-                    x.com
-                  </Link>{" "}
-                  :)
-                </>
-              ),
-            },
-          ]}
-        />
+      <h3 className="mt-8 text-xl font-medium">journey</h3>
+      <p className="prose prose-neutral dark:prose-invert">
+        I started coding in python{" "}
+        <Tooltip text={`${daysSinceStartedCoding} days`}>
+          <span className="underline decoration-wavy">
+            ~{yearsSinceStartedCoding}
+          </span>
+        </Tooltip>{" "}
+        years ago. Though I never really understood it back then. I then moved
+        onto web development in late 2022 and started working with HTML and CSS.
+        I now work with React, TypeScript, and TailwindCSS. I&apos;ve been
+        serious about SWE for{" "}
+        <Tooltip text={`${daysSinceSeriousAboutSWE} days`}>
+          <span className="underline decoration-wavy">
+            ~{monthsSinceSeriousAboutSWE}
+          </span>
+        </Tooltip>{" "}
+        months and would like to make it my career.
+      </p>
 
-        <MessageGroup
-          messages={[
-            {
-              key: "coding-journey",
-              content: (
-                <>
-                  I started coding in python ~
-                  <Tooltip text={`${daysSinceStartedCoding} days`}>
-                    <span className="underline decoration-dotted">
-                      {yearsSinceStartedCoding}
-                    </span>
-                  </Tooltip>{" "}
-                  years ago. However, I never really understood it back then.
-                </>
-              ),
-            },
-            {
-              key: "web-dev",
-              content: (
-                <>
-                  I then moved onto web development in late 2022 and started
-                  working with HTML and CSS. I now work with React, TypeScript,
-                  and TailwindCSS.
-                </>
-              ),
-            },
-            {
-              key: "code-3",
-              content: (
-                <>
-                  I&apos;ve been serious about SWE for ~6 months and would like
-                  to make it my career. I also have a strong interest in
-                  cybersecurity.
-                </>
-              ),
-            },
-          ]}
-        />
-
-        <MessageGroup
-          messages={[
-            {
-              key: "finally",
-              content: (
-                <>
-                  Finally, this site is basically a 1:1 from{" "}
-                  <Link
-                    href="https://github.com/alii"
-                    className="nice-underline-neutral-400 dark:nice-underline-neutral-200/50"
-                    target="_blank"
-                  >
-                    alii
-                  </Link>{" "}
-                  over on github so shoutout to him for open sourcing this.
-                </>
-              ),
-            },
-          ]}
-        />
-      </motion.ul>
+      <h3 className="mt-8 text-xl font-medium">connect</h3>
+      <p className="prose prose-neutral dark:prose-invert">
+        contact me directly at{" "}
+        <Link className="font-medium" href="mailto:d@niel.lol">
+          d@niel.lol
+        </Link>{" "}
+        or find me at the links below.
+      </p>
+      <ul className="font-sm mt-4 flex space-x-4 text-neutral-600 dark:text-neutral-300">
+        <li>
+          <Link
+            href="https://x.com/lootings"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 transition-colors"
+          >
+            <BsTwitterX className="text-white dark:text-neutral-400" />
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="https://instagram.com/ddann.k"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 transition-colors"
+          >
+            <FaInstagram className="text-white dark:text-neutral-400" />
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="https://git.new/dan-"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 transition-colors"
+          >
+            <FaGithub className="text-white dark:text-neutral-400" />
+          </Link>
+        </li>
+      </ul>
     </main>
   );
 }
