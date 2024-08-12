@@ -144,7 +144,7 @@ export default function Home() {
             href="https://x.com/lootings"
             rel="noopener noreferrer"
             target="_blank"
-            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 transition-colors"
+            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-950 hover:bg-neutral-900 transition-colors"
           >
             <BsTwitterX className="text-white dark:text-neutral-400" />
           </Link>
@@ -154,7 +154,7 @@ export default function Home() {
             href="https://instagram.com/ddann.k"
             rel="noopener noreferrer"
             target="_blank"
-            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 transition-colors"
+            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-950 hover:bg-neutral-900 transition-colors"
           >
             <FaInstagram className="text-white dark:text-neutral-400" />
           </Link>
@@ -164,7 +164,7 @@ export default function Home() {
             href="https://git.new/dan-"
             rel="noopener noreferrer"
             target="_blank"
-            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 transition-colors"
+            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-950 hover:bg-neutral-900 transition-colors"
           >
             <FaGithub className="text-white dark:text-neutral-400" />
           </Link>
