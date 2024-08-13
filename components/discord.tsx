@@ -1,6 +1,6 @@
 "use client";
 import { useLanyardWS } from "use-lanyard";
-import { discordId } from "../lib/constants";
+import { discordId, discordUser } from "../lib/constants";
 
 export default function Discord(props: any) {
   const lanyard = useLanyardWS(discordId, {
@@ -13,7 +13,7 @@ export default function Discord(props: any) {
     <p className="prose prose-neutral dark:prose-invert">
       my discord is{" "}
       <span className="font-medium underline text-white">
-        @{lanyard?.discord_user.username}
+        @{lanyard?.discord_user.username || `${discordUser}`}
       </span>{" "}
       - i&apos;m currently{" "}
       <span
