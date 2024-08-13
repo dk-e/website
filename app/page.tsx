@@ -12,6 +12,7 @@ import ConfettiText from "../components/confetti";
 import Music from "../components/music";
 import { FaInstagram, FaGithub } from "react-icons/fa";
 import { BsTwitterX } from "react-icons/bs";
+import Discord from "../components/discord";
 
 function LocationIcon() {
   return (
@@ -112,16 +113,16 @@ export default function Home() {
 
       <h3 className="mt-8 text-xl font-medium">journey</h3>
       <p className="prose prose-neutral dark:prose-invert">
-        I started coding in python{" "}
+        i started coding in python{" "}
         <Tooltip text={`${daysSinceStartedCoding} days`}>
           <span className="underline decoration-wavy">
             ~{yearsSinceStartedCoding}
           </span>
         </Tooltip>{" "}
-        years ago. Though I never really understood it back then. I then moved
-        onto web development in late 2022 and started working with HTML and CSS.
-        I now work with React, TypeScript, and TailwindCSS. I&apos;ve been
-        serious about SWE for{" "}
+        years ago. though i never really understood it back then. i then moved
+        onto web development in late 2022 and started working with HTML & CSS. i
+        now work with React, TypeScript, and TailwindCSS. i&apos;ve been serious
+        about SWE for{" "}
         <Tooltip text={`${daysSinceSeriousAboutSWE} days`}>
           <span className="underline decoration-wavy">
             ~{monthsSinceSeriousAboutSWE}
@@ -138,6 +139,7 @@ export default function Home() {
         </Link>{" "}
         or find me at the links below.
       </p>
+      <Discord />
       <ul className="font-sm mt-4 flex space-x-4 text-neutral-600 dark:text-neutral-300">
         <li>
           <Link
