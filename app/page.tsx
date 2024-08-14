@@ -64,8 +64,8 @@ export default function Home() {
       </div>
 
       <p className="prose prose-neutral dark:prose-invert">
-        hey, i&apos;m dan. i&apos;m a {age} y/o software engineer (barely) based
-        in the{" "}
+        hey, i&apos;m dan. i&apos;m a {age} y/o software engineer (barely),
+        based in the{" "}
         <span className="font-medium underline decoration-wavy">
           <ConfettiText text="UK" emoji="☕" scalar={5} />
         </span>
