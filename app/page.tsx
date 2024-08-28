@@ -122,7 +122,7 @@ export default function Home() {
         years ago. though i never really understood it back then. i then moved
         onto web development in late 2022 and started working with HTML & CSS. i
         now work with React, TypeScript, and TailwindCSS. i&apos;ve been serious
-        about SWE for{" "}
+        about Programming for{" "}
         <Tooltip text={`${daysSinceSeriousAboutSWE} days`}>
           <span className="underline decoration-wavy">
             ~{monthsSinceSeriousAboutSWE}
