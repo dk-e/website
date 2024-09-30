@@ -57,12 +57,10 @@ export default function Home() {
       <h1 className="mb-4 text-2xl font-medium tracking-tighter">
         a bit about me
       </h1>
-
       <div className="flex items-center gap-2 mb-2">
         <LocationIcon />
         <Flag country="GB" size={20} draggable="false" />
       </div>
-
       <p className="prose prose-neutral dark:prose-invert">
         hey, i&apos;m dan. i&apos;m a {age} y/o software engineer (barely),
         based in the{" "}
@@ -72,7 +70,6 @@ export default function Home() {
         . i love tinkering with things to make them just how i like. tech wise i
         enjoy building for the web and i live on the terminal!
       </p>
-
       <h3 className="mb-2 mt-4 text-xl font-medium">music</h3>
       <p className="prose prose-neutral dark:prose-invert">
         i&apos;m a big music guy. i like anything from underground/opium to rock
@@ -80,9 +77,7 @@ export default function Home() {
         below! cool right?
       </p>
       <Music />
-
       <h3 className="mb-2 mt-4 text-xl font-medium">blog</h3>
-
       <div className="flex flex-col gap-4">
         {posts.map((post) => (
           <Link key={post.slug} href={`/blog/${post.slug}`} className="">
@@ -110,7 +105,6 @@ export default function Home() {
           all posts →
         </Link>
       </div>
-
       <h3 className="mt-8 text-xl font-medium">journey</h3>
       <p className="prose prose-neutral dark:prose-invert">
         i started coding in python{" "}
@@ -129,6 +123,12 @@ export default function Home() {
           </span>
         </Tooltip>{" "}
         months and would like to make it my career.
+      </p>
+      <h3 className="mt-8 text-xl font-medium">extras</h3>
+      <p className="prose prose-neutral dark:prose-invert">
+        aside from all of that, i love to travel and i aim to visit every
+        continent. so far -countries wise- i have been to the USA (florida/nyc),
+        Norway, Portugal, Spain, Germany,and the UAE (dubai/abu dhabi).
       </p>
 
       <h3 className="mt-8 text-xl font-medium">connect</h3>
