@@ -124,7 +124,7 @@ export default function Home() {
         </Tooltip>{" "}
         months and would like to make it my career. i also have a strong
         interest in cyber security, ethical hacking and the{" "}
-        <Link className="font-medium" href="/crypto">
+        <Link className="font-medium" href="/donate">
           blockchain
         </Link>
         .
