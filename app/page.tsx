@@ -122,7 +122,12 @@ export default function Home() {
             ~{monthsSinceSeriousAboutSWE}
           </span>
         </Tooltip>{" "}
-        months and would like to make it my career.
+        months and would like to make it my career. i also have a strong
+        interest in cyber security, ethical hacking and the{" "}
+        <Link className="font-medium" href="/crypto">
+          blockchain
+        </Link>
+        .
       </p>
       <h3 className="mt-8 text-xl font-medium">extras</h3>
       <p className="prose prose-neutral dark:prose-invert">
