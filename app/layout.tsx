@@ -12,10 +12,10 @@ export const metadata: Metadata = {
     default: "Dan",
     template: "%s | Dan",
   },
-  description: "Developer & tech nerd.",
+  description: "Developer | 🧑‍💻",
   openGraph: {
     title: "Dan",
-    description: "Developer & tech nerd.",
+    description: "Developer | 🧑‍💻",
     url: "https://daniel.rest",
     siteName: "Dan",
     locale: "en_US",
