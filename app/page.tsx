@@ -26,7 +26,7 @@ function LocationIcon() {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-        className="h-5 w-5"
+      className="h-5 w-5"
     >
       <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
       <circle cx="12" cy="10" r="3" />
@@ -57,24 +57,24 @@ export default function Home() {
       <h1 className="mb-4 text-2xl font-medium tracking-tighter">
         a bit about me
       </h1>
-      <div className="flex items-center gap-2 mb-2">
+      {/* <div className="flex items-center gap-2 mb-2">
         <LocationIcon />
         <Flag country="GB" size={20} draggable="false" />
-      </div>
+      </div> */}
       <p className="prose prose-neutral dark:prose-invert">
-        hey, i&apos;m dan. i&apos;m a {age} y/o software engineer (barely),
-        based in the{" "}
+        Hi, i&apos;m{" "}
+        <span className="font-medium underline text-white">Dan</span>
+        . <br /> I&apos;m a {age} y/o tech nerd, based in the{" "}
         <span className="font-medium underline decoration-wavy">
           <ConfettiText text="UK" emoji="☕" scalar={5} />
         </span>
-        . i love tinkering with things to make them just how i like. tech wise i
-        enjoy building for the web and i live on the terminal!
+        . I enjoy building for the web, hardware, the terminal & cyber security!
       </p>
       <h3 className="mb-2 mt-4 text-xl font-medium">music</h3>
       <p className="prose prose-neutral dark:prose-invert">
-        i&apos;m a big music guy. i like anything from underground/opium to rock
-        & indie, if im listening at the minute you will be able to see this
-        below! cool right?
+        I&apos;m a big music guy. I like pretty much everything (rap, hip-hop,
+        indie, rock, opium), if i&apos;m listening at the minute you will be
+        able to see this below! Cool right?
       </p>
       <Music />
       <h3 className="mb-2 mt-4 text-xl font-medium">blog</h3>
@@ -107,38 +107,37 @@ export default function Home() {
       </div>
       <h3 className="mt-8 text-xl font-medium">journey</h3>
       <p className="prose prose-neutral dark:prose-invert">
-        i started coding in python{" "}
+        I started coding in python{" "}
         <Tooltip text={`${daysSinceStartedCoding} days`}>
           <span className="underline decoration-wavy">
             ~{yearsSinceStartedCoding}
           </span>
         </Tooltip>{" "}
-        years ago. though i never really understood it back then. i then moved
-        onto web development in late 2022 and started working with HTML & CSS. i
-        now work with React, TypeScript, and TailwindCSS. i&apos;ve been serious
-        about Programming for{" "}
+        years ago at high school. In my own time I learned (basic) web
+        development, in late 2022. I now work with React, TypeScript, and
+        TailwindCSS. also have a strong interest in cyber security, ethical
+        hacking and the{" "}
+        <Link className="font-medium" href="/donate">
+          blockchain
+        </Link>
+        . I&apos;ve been seriously persuing these interests for{" "}
         <Tooltip text={`${daysSinceSeriousAboutSWE} days`}>
           <span className="underline decoration-wavy">
             ~{monthsSinceSeriousAboutSWE}
           </span>
         </Tooltip>{" "}
-        months and would like to make it my career. i also have a strong
-        interest in cyber security, ethical hacking and the{" "}
-        <Link className="font-medium" href="/donate">
-          blockchain
-        </Link>
-        .
+        months and would like to make them my career.
       </p>
       <h3 className="mt-8 text-xl font-medium">extras</h3>
       <p className="prose prose-neutral dark:prose-invert">
-        aside from all of that, i love to travel and i aim to visit every
-        continent. so far -countries wise- i have been to the USA (florida/nyc),
-        Norway, Portugal, Spain, Germany,and the UAE (dubai/abu dhabi).
+        Aside from all of that, I love to travel and I aim to visit every
+        continent. So far -countries wise- I have been to the USA (Florida/NYC),
+        Norway, Portugal, Spain, Germany & the UAE (Dubai/Abu Dhabi).
       </p>
 
       <h3 className="mt-8 text-xl font-medium">connect</h3>
       <p className="prose prose-neutral dark:prose-invert">
-        contact me directly at{" "}
+        Contact me directly at{" "}
         <Link className="font-medium" href="mailto:d@niel.lol">
           d@niel.lol
         </Link>{" "}
