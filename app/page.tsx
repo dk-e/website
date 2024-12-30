@@ -62,19 +62,19 @@ export default function Home() {
         <Flag country="GB" size={20} draggable="false" />
       </div> */}
       <p className="prose prose-neutral dark:prose-invert">
-        Hi, i&apos;m{" "}
+        Hi, I&apos;m{" "}
         <span className="font-medium underline text-white">Dan</span>
-        . <br /> I&apos;m a {age} y/o tech nerd, based in the{" "}
+        . <br /> I&apos;m a {age} y/o tech nerd based in the{" "}
         <span className="font-medium underline decoration-wavy">
           <ConfettiText text="UK" emoji="☕" scalar={5} />
         </span>
-        . I enjoy building for the web, hardware, the terminal & cyber security!
+        . I enjoy building for the web, hardware, the terminal, and cyber security!
       </p>
       <h3 className="mb-2 mt-4 text-xl font-medium">music</h3>
       <p className="prose prose-neutral dark:prose-invert">
         I&apos;m a big music guy. I like pretty much everything (rap, hip-hop,
-        indie, rock, opium), if i&apos;m listening at the minute you will be
-        able to see this below! Cool right?
+        indie, rock, opium). If I&apos;m listening at the moment, you will be
+        able to see it below! Cool, right?
       </p>
       <Music />
       <h3 className="mb-2 mt-4 text-xl font-medium">blog</h3>
@@ -107,20 +107,20 @@ export default function Home() {
       </div>
       <h3 className="mt-8 text-xl font-medium">journey</h3>
       <p className="prose prose-neutral dark:prose-invert">
-        I started coding in python{" "}
+        I started coding in Python{" "}
         <Tooltip text={`${daysSinceStartedCoding} days`}>
           <span className="underline decoration-wavy">
             ~{yearsSinceStartedCoding}
           </span>
         </Tooltip>{" "}
-        years ago at high school. In my own time I learned (basic) web
-        development, in late 2022. I now work with React, TypeScript, and
-        TailwindCSS. also have a strong interest in cyber security, ethical
-        hacking and the{" "}
+        years ago at high school. In my own time, I learned (basic) web
+        development in late 2022. I now work with React, TypeScript, and
+        TailwindCSS. I also have a strong interest in cyber security, ethical
+        hacking, and the{" "}
         <Link className="font-medium" href="/donate">
           blockchain
         </Link>
-        . I&apos;ve been seriously persuing these interests for{" "}
+        . I&apos;ve been seriously pursuing these interests for{" "}
         <Tooltip text={`${daysSinceSeriousAboutSWE} days`}>
           <span className="underline decoration-wavy">
             ~{monthsSinceSeriousAboutSWE}
@@ -130,9 +130,9 @@ export default function Home() {
       </p>
       <h3 className="mt-8 text-xl font-medium">extras</h3>
       <p className="prose prose-neutral dark:prose-invert">
-        Aside from all of that, I love to travel and I aim to visit every
-        continent. So far -countries wise- I have been to the USA (Florida/NYC),
-        Norway, Portugal, Spain, Germany & the UAE (Dubai/Abu Dhabi).
+        Aside from all of that, I love to travel, and I aim to visit every
+        continent. So far, country-wise, I have been to the USA (Florida/NYC),
+        Norway, Portugal, Spain, Germany, and the UAE (Dubai/Abu Dhabi).
       </p>
 
       <h3 className="mt-8 text-xl font-medium">connect</h3>
