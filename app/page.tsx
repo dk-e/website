@@ -72,15 +72,20 @@ export default function Home() {
       </p>
       <h3 className="mb-2 mt-4 text-xl font-medium">music</h3>
       <p className="prose prose-neutral dark:prose-invert">
-        I&apos;m a big music guy. I like pretty much everything (rap, hip-hop,
-        indie, rock, opium). If I&apos;m listening at the moment, you will be
-        able to see it below! Cool, right?
+        I&apos;m a big music guy and I like pretty much everything depending on the mood. Check out my{' '}
+        <Link
+          href="https://stats.fm/warn"
+          className="font-medium underline decoration-neutral-400 decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600"
+        >
+          stats.fm
+        </Link>
+        {' '}to see what I&apos;ve been listening to lately. Also, If I&apos;m listening at the moment, you will be able to see it below, in real time!
       </p>
       <Music />
       <h3 className="mb-2 mt-4 text-xl font-medium">blog</h3>
       <div className="flex flex-col gap-4">
         {posts.map((post) => (
-          <Link key={post.slug} href={`/blog/${post.slug}`} className="">
+          <Link key={post.slug} href={`/blog/${post.slug}`}>
             <div className="flex w-full justify-between">
               <p className="font-medium underline decoration-neutral-400 decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600">
                 {post.metadata.title.toLowerCase()}
