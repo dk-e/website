@@ -63,23 +63,28 @@ export default function Home() {
       </div> */}
       <p className="prose prose-neutral dark:prose-invert">
         Hi, I&apos;m{" "}
-        <span className="font-medium underline text-white">Dan</span>
+        <span className="font-medium prose prose-neutral dark:prose-invert">
+          Dan
+        </span>
         . <br /> I&apos;m a {age} y/o tech nerd based in the{" "}
         <span className="font-medium underline decoration-wavy">
           <ConfettiText text="UK" emoji="☕" scalar={5} />
         </span>
-        . I enjoy building for the web, hardware, the terminal, and cyber security!
+        . I enjoy building for the web, hardware, the terminal, and cyber
+        security!
       </p>
       <h3 className="mb-2 mt-4 text-xl font-medium">music</h3>
       <p className="prose prose-neutral dark:prose-invert">
-        I&apos;m a big music guy and I like pretty much everything depending on the mood. Check out my{' '}
+        I&apos;m a big music guy and I like pretty much everything depending on
+        the mood. Check out my{" "}
         <Link
           href="https://stats.fm/warn"
           className="font-medium underline decoration-neutral-400 decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600"
         >
           stats.fm
-        </Link>
-        {' '}to see what I&apos;ve been listening to lately. Also, If I&apos;m listening at the moment, you will be able to see it below, in real time!
+        </Link>{" "}
+        to see what I&apos;ve been listening to lately. Also, If I&apos;m
+        listening at the moment, you will be able to see it below, in real time!
       </p>
       <Music />
       <h3 className="mb-2 mt-4 text-xl font-medium">blog</h3>
@@ -155,9 +160,9 @@ export default function Home() {
             href="https://x.com/lootings"
             rel="noopener noreferrer"
             target="_blank"
-            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-950 hover:bg-neutral-900 transition-colors"
+            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 transition-colors"
           >
-            <BsTwitterX className="text-white dark:text-neutral-400" />
+            <BsTwitterX className="text-black dark:text-neutral-400" />
           </Link>
         </li>
         <li>
@@ -165,9 +170,9 @@ export default function Home() {
             href="https://instagram.com/ddann.k"
             rel="noopener noreferrer"
             target="_blank"
-            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-950 hover:bg-neutral-900 transition-colors"
+            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 transition-colors"
           >
-            <FaInstagram className="text-white dark:text-neutral-400" />
+            <FaInstagram className="text-black dark:text-neutral-400" />
           </Link>
         </li>
         <li>
@@ -175,9 +180,9 @@ export default function Home() {
             href="https://git.new/dan-"
             rel="noopener noreferrer"
             target="_blank"
-            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-950 hover:bg-neutral-900 transition-colors"
+            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 transition-colors"
           >
-            <FaGithub className="text-white dark:text-neutral-400" />
+            <FaGithub className="text-black dark:text-neutral-400" />
           </Link>
         </li>
       </ul>

@@ -1,6 +1,7 @@
 "use client";
 import { useLanyardWS } from "use-lanyard";
 import { discordId, discordUser } from "../lib/constants";
+import Link from "next/link";
 
 export default function Discord(props: any) {
   const lanyard = useLanyardWS(discordId, {
@@ -12,9 +13,12 @@ export default function Discord(props: any) {
   return (
     <p className="prose prose-neutral dark:prose-invert">
       my discord is{" "}
-      <span className="font-medium underline text-white">
+      <Link
+        className="font-medium"
+        href="https://discord.com/users/424242424242424242"
+      >
         @{lanyard?.discord_user.username || `${discordUser}`}
-      </span>{" "}
+      </Link>{" "}
       - i&apos;m currently{" "}
       <span
         className={
