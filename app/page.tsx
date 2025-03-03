@@ -66,7 +66,8 @@ export default function Home() {
         <span className="font-medium prose prose-neutral dark:prose-invert">
           Dan
         </span>
-        . <br /> I&apos;m a {age} y/o tech nerd based in the{" "}
+        . <br /> I&apos;m {age === 18 ? "an" : "a"} {age} y/o tech nerd based in
+        the{" "}
         <span className="font-medium underline decoration-wavy">
           <ConfettiText text="UK" emoji="☕" scalar={5} />
         </span>
