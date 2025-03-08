@@ -1,0 +1,163 @@
+---
+title: macos setup
+description: how my mac is setup
+date: "March 7, 2025"
+---
+
+![desktop](https://cdn.daniel.rest/file/ss-1741392350197.png)
+
+Literally no one asked for this, but about 6 months ago I said I'd talk about my WSL setup, and I never did. So here we are with my new Mac instead.
+
+### Hotkeys
+
+I use a combination of [karabiner-elements](https://karabiner-elements.pqrs.org/) and [raycast](https://raycast.com/) to move around my Mac. This includes window management, navigation, and quickly opening apps. To open an app, I use hyperkey (cmd+opt+ctrl+shift) bound to capslock, then the corresponding letter of the app; such as hyper+t for the terminal.
+
+Here is my karabiner-elements config:
+
+```json
+# ~/.config/karabiner/karabiner.json
+
+{
+  "profiles": [
+    {
+      "complex_modifications": {
+        "rules": [
+          {
+            "manipulators": [
+              {
+                "description": "Change caps_lock to command+control+option+shift.",
+                "from": {
+                  "key_code": "caps_lock",
+                  "modifiers": { "optional": ["any"] }
+                },
+                "to": [
+                  {
+                    "key_code": "left_shift",
+                    "modifiers": ["left_command", "left_control", "left_option"]
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "description": "Hyper + IJKL as arrow keys",
+                "from": {
+                  "key_code": "i",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_control",
+                      "left_option",
+                      "left_shift"
+                    ]
+                  }
+                },
+                "to": [{ "key_code": "up_arrow" }],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "j",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_control",
+                      "left_option",
+                      "left_shift"
+                    ]
+                  }
+                },
+                "to": [{ "key_code": "left_arrow" }],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "k",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_control",
+                      "left_option",
+                      "left_shift"
+                    ]
+                  }
+                },
+                "to": [{ "key_code": "down_arrow" }],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "l",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_control",
+                      "left_option",
+                      "left_shift"
+                    ]
+                  }
+                },
+                "to": [{ "key_code": "right_arrow" }],
+                "type": "basic"
+              },
+              {
+                "description": "Hyper + U/O as Page Up/Down",
+                "from": {
+                  "key_code": "u",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_control",
+                      "left_option",
+                      "left_shift"
+                    ]
+                  }
+                },
+                "to": [{ "key_code": "page_up" }],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "o",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_control",
+                      "left_option",
+                      "left_shift"
+                    ]
+                  }
+                },
+                "to": [{ "key_code": "page_down" }],
+                "type": "basic"
+              }
+            ]
+          }
+        ]
+      },
+      "name": "Default profile",
+      "selected": true,
+      "virtual_hid_keyboard": { "keyboard_type_v2": "iso" }
+    }
+  ]
+}
+```
+
+### Terminal
+
+I use [ghostty](https://ghostty.org) as my terminal. It's very fast and feels native to macOS. The default config is great and the only things I have changed are my font and font size. I use a nerd font patch of SFMono for everything code-related.
+
+![terminal](https://cdn.daniel.rest/file/ss-1741391909363.png)
+
+### Editor
+
+I like to keep it simple with my editor, so I just use [Cursor](https://cursor.com) (a fork of VSCode with built-in AI). I don't plan on changing this any time soon as I am more than comfortable with it.
+
+### Browser
+
+I am a very big fan of a great browser. I currently use Zen, but before this, I was using Arc. Arc was great but it destroyed my battery and was riddled with bugs, and it seems that the devs just don't care about it anymore. Zen is great - apart from one thing - it's Firefox based 😔.
+
+### Conclusion
+
+I didn't really need to write this, but I hadn't written up a blog in a long time. If you need to contact me, please check my socials below 😄
+
+[X](https://x.com/lootings) - [Instagram](https://instagram.com/ddann.k) - [Discord](https://discord.dog/745631824163766412)
