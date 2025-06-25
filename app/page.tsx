@@ -191,6 +191,19 @@ export default function Home() {
           </Link>
         </li>
       </ul>
+      <footer className="fixed bottom-4 right-4 text-xs text-neutral-600 dark:text-neutral-400">
+        <p>
+          pssttt this is{" "}
+          <Link
+            href="https://github.com/dk-e/website"
+            className="font-medium underline decoration-neutral-400 decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            open source
+          </Link>
+        </p>
+      </footer>
     </main>
   );
 }
