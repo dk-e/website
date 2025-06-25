@@ -10,7 +10,7 @@ import {
 } from "../lib/constants";
 import ConfettiText from "../components/confetti";
 import Music from "../components/music";
-import { FaInstagram, FaGithub } from "react-icons/fa";
+import { FaGithub, FaTelegram } from "react-icons/fa";
 import { BsTwitterX } from "react-icons/bs";
 import Discord from "../components/discord";
 
@@ -71,8 +71,7 @@ export default function Home() {
         <span className="font-medium underline decoration-wavy">
           <ConfettiText text="UK" emoji="☕" scalar={5} />
         </span>
-        . I enjoy building for the web, hardware, the terminal, and cyber
-        security!
+        . I enjoy building for the web, hardware and cyber security!
       </p>
       <h3 className="mb-2 mt-4 text-xl font-medium">music</h3>
       <p className="prose prose-neutral dark:prose-invert">
@@ -141,18 +140,23 @@ export default function Home() {
       </p>
       <h3 className="mt-8 text-xl font-medium">extras</h3>
       <p className="prose prose-neutral dark:prose-invert">
-        Aside from all of that, I love to travel, and I aim to visit every
-        continent. So far, country-wise, I have been to the USA (Florida/NYC),
-        Norway, Portugal, Spain, Germany, and the UAE (Dubai/Abu Dhabi).
+        Aside from all of that, I love to travel. I aim to visit every continent
+        at the very least. Currently, I&apos;m 3/7 of the way there.
       </p>
 
       <h3 className="mt-8 text-xl font-medium">connect</h3>
       <p className="prose prose-neutral dark:prose-invert">
-        Contact me directly at{" "}
-        <Link className="font-medium" href="mailto:d@niel.lol">
-          d@niel.lol
+        Contact via email at{" "}
+        <Link className="font-medium" href="mailto:hi@dann.lol">
+          hi@dann.lol
         </Link>{" "}
-        or find me at the links below.
+        or on signal at{" "}
+        <Link
+          className="font-medium"
+          href="https://signal.me/#eu/9ruCLvkLVNjqXtu94TW6-5BUv2BkiZRBt6YWlWCWNQeNQzYNpltGT7E2LeojN4Gu"
+        >
+          nope.01
+        </Link>
       </p>
       <Discord />
       <ul className="font-sm mt-4 flex space-x-4 text-neutral-600 dark:text-neutral-300">
@@ -168,22 +172,22 @@ export default function Home() {
         </li>
         <li>
           <Link
-            href="https://instagram.com/ddann.k"
-            rel="noopener noreferrer"
-            target="_blank"
-            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 transition-colors"
-          >
-            <FaInstagram className="text-black dark:text-neutral-400" />
-          </Link>
-        </li>
-        <li>
-          <Link
             href="https://git.new/dan-"
             rel="noopener noreferrer"
             target="_blank"
             className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 transition-colors"
           >
             <FaGithub className="text-black dark:text-neutral-400" />
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="https://t.me/reIiefs"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 transition-colors"
+          >
+            <FaTelegram className="text-black dark:text-neutral-400" />
           </Link>
         </li>
       </ul>
