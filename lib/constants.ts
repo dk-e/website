@@ -1,5 +1,3 @@
-// Existing constants
-
 export const UKTimeFormatter = new Intl.DateTimeFormat(undefined, {
   timeZone: "Europe/London",
   hour: "numeric",
@@ -13,6 +11,8 @@ export const RelativeTimeFormatter = new Intl.RelativeTimeFormat("en", {
 
 export const discordId = "745631824163766412";
 export const discordUser = "sexuals";
+
+export const domain = "dann.lol";
 
 // been commiting since birth
 export const dob = new Date("2007-02-23");
@@ -30,9 +30,9 @@ export const daysUntilBirthday = RelativeTimeFormatter.formatToParts(
       1000 /
       60 /
       60 /
-      24
+      24,
   ),
-  "day"
+  "day",
 )[1]!.value.toString();
 
 export const dayStartedCoding = new Date("2020-10-01");
@@ -44,7 +44,7 @@ const timeDifference = Number(currentDate) - Number(dayStartedCoding);
 
 // Convert time difference from milliseconds to days
 export const daysSinceStartedCoding = Math.floor(
-  timeDifference / (1000 * 60 * 60 * 24)
+  timeDifference / (1000 * 60 * 60 * 24),
 );
 
 function daysBetweenDates(startDate: Date, endDate: Date): number {
@@ -55,7 +55,7 @@ function daysBetweenDates(startDate: Date, endDate: Date): number {
 export const seriousAboutSWE = new Date("2024-02-01");
 export const daysSinceSeriousAboutSWE = daysBetweenDates(
   seriousAboutSWE,
-  currentDate
+  currentDate,
 );
 
 // Function to calculate months between two dates
@@ -67,5 +67,5 @@ function monthsBetweenDates(startDate: Date, endDate: Date): number {
 
 export const monthsSinceSeriousAboutSWE = monthsBetweenDates(
   seriousAboutSWE,
-  currentDate
+  currentDate,
 );

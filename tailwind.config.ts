@@ -39,7 +39,7 @@ const config: Config = {
           {
             values: flattenColorPalette(tw.theme("colors")),
             type: "color",
-          }
+          },
         );
 
         tw.matchUtilities(
@@ -61,7 +61,7 @@ const config: Config = {
           {
             values: flattenColorPalette(tw.theme("colors")),
             type: "color",
-          }
+          },
         );
       },
     },

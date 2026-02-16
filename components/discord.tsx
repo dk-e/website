@@ -14,7 +14,7 @@ export default function Discord(props: any) {
     <p className="prose prose-neutral dark:prose-invert">
       my discord is{" "}
       <Link
-        className="font-medium"
+        className="font-medium text-purple-600 nice-underline-purple-500 dark:text-purple-300 dark:nice-underline-purple-300"
         href="https://discord.com/users/424242424242424242"
       >
         @{lanyard?.discord_user.username || `${discordUser}`}

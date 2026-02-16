@@ -7,11 +7,13 @@ import {
   yearsSinceStartedCoding,
   monthsSinceSeriousAboutSWE,
   daysSinceSeriousAboutSWE,
+  domain,
 } from "../lib/constants";
 import ConfettiText from "../components/confetti";
 import Music from "../components/music";
 import { FaGithub, FaTelegram } from "react-icons/fa";
 import { BsTwitterX } from "react-icons/bs";
+import { ArrowUpRight } from "lucide-react";
 import Discord from "../components/discord";
 
 // function LocationIcon() {
@@ -35,9 +37,9 @@ import Discord from "../components/discord";
 // }
 
 const Tooltip = ({ text, children }: any) => (
-  <span className="relative group">
+  <span className="group relative">
     {children}
-    <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 p-2 bg-neutral-800 text-white text-sm rounded transition-opacity duration-300 opacity-0 group-hover:opacity-100 pointer-events-none min-w-max whitespace-nowrap">
+    <span className="pointer-events-none absolute bottom-full left-1/2 mb-2 min-w-max -translate-x-1/2 rounded bg-neutral-800 p-2 text-sm text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
       {text}
     </span>
   </span>
@@ -48,155 +50,186 @@ export default function Home() {
     .sort(
       (a, b) =>
         new Date(b.metadata.date).getTime() -
-        new Date(a.metadata.date).getTime()
+        new Date(a.metadata.date).getTime(),
     )
     .slice(0, 4);
 
   return (
-    <main className="text-left">
-      <h1 className="mb-4 text-2xl font-medium tracking-tighter">
-        a bit about me
-      </h1>
-      {/* <div className="flex items-center gap-2 mb-2">
-        <LocationIcon />
-        <Flag country="GB" size={20} draggable="false" />
-      </div> */}
-      <p className="prose prose-neutral dark:prose-invert">
-        Hi, I&apos;m{" "}
-        <span className="font-medium prose prose-neutral dark:prose-invert">
-          Dan
-        </span>
-        . <br /> I&apos;m {age === 18 ? "an" : "a"} {age} y/o tech nerd based in
-        the{" "}
-        <span className="font-medium underline decoration-wavy">
-          <ConfettiText text="UK" emoji="☕" scalar={5} />
-        </span>
-        . I enjoy building for the web, hardware and cyber security!
-      </p>
-      <h3 className="mb-2 mt-4 text-xl font-medium">music</h3>
-      <p className="prose prose-neutral dark:prose-invert">
-        I&apos;m a big music guy and I like pretty much everything depending on
-        the mood. Check out my{" "}
-        <Link
-          href="https://stats.fm/warn"
-          className="font-medium underline decoration-neutral-400 decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600"
-        >
-          stats.fm
-        </Link>{" "}
-        to see what I&apos;ve been listening to lately. Also, If I&apos;m
-        listening at the moment, you will be able to see it below, in real time!
-      </p>
-      <Music />
-      <h3 className="mb-2 mt-4 text-xl font-medium">blog</h3>
-      <div className="flex flex-col gap-4">
-        {posts.map((post) => (
-          <Link key={post.slug} href={`/blog/${post.slug}`}>
-            <div className="flex w-full justify-between">
-              <p className="font-medium underline decoration-neutral-400 decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600">
-                {post.metadata.title.toLowerCase()}
-              </p>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                {new Date(post.metadata.date)
-                  .toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })
-                  .toLowerCase()}
-              </p>
-            </div>
-          </Link>
-        ))}
+    <main className="space-y-8 text-left">
+      <section className="space-y-3">
+        <p className="text-xs uppercase tracking-[0.2em] text-purple-500 dark:text-purple-400">
+          {domain}
+        </p>
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          hi, i&apos;m dan
+        </h1>
+        <p className="max-w-prose text-base text-neutral-700 dark:text-neutral-300">
+          i&apos;m {age === 18 ? "an" : "a"} {age} y/o cyber security student.
+          interested in web development, investigating cybercrime, and crypto.
+          based in the{" "}
+          <span className="font-medium underline decoration-wavy decoration-purple-500 dark:decoration-purple-400">
+            <ConfettiText text="UK" emoji="🇬🇧" scalar={5} />
+          </span>
+          .
+        </p>
+      </section>
 
+      <section className="space-y-2">
+        <h2 className="flex items-center gap-1 text-xs font-medium uppercase tracking-[0.2em] text-neutral-600 dark:text-neutral-400">
+          <span className="text-purple-500 dark:text-purple-400">*</span>
+          <span>now</span>
+        </h2>
+        <p className="text-neutral-700 dark:text-neutral-300">
+          check out my{" "}
+          <Link
+            href="https://stats.fm/warn"
+            className="text-purple-600 nice-underline-purple-500 dark:text-purple-300 dark:nice-underline-purple-300"
+          >
+            stats.fm
+          </Link>{" "}
+          to see what i&apos;ve been listening to lately. if i&apos;m listening
+          at the moment, you&apos;ll be able to see it below in real time.
+        </p>
+        <Music />
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="flex items-center gap-1 text-xs font-medium uppercase tracking-[0.2em] text-neutral-600 dark:text-neutral-400">
+          <span className="text-purple-500 dark:text-purple-400">*</span>
+          <span>blog</span>
+        </h2>
+        <div className="space-y-1">
+          {posts.map((post) => (
+            <Link key={post.slug} href={`/blog/${post.slug}`}>
+              <div className="group flex w-full items-baseline justify-between gap-4 px-1 py-1">
+                <p className="text-base font-medium text-neutral-900 transition-colors group-hover:text-purple-600 dark:text-neutral-50 dark:group-hover:text-purple-300">
+                  {post.metadata.title.toLowerCase()}
+                </p>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                  {new Date(post.metadata.date)
+                    .toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                    .toLowerCase()}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
         <Link
           href="/blog"
-          className="decoration-neutral-400 font-medium underline decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600"
+          className="group inline-flex items-center gap-1 pl-1  text-purple-500 transition-colors hover:text-purple-400 dark:text-purple-300 dark:hover:text-purple-200"
         >
-          all posts →
-        </Link>
-      </div>
-      <h3 className="mt-8 text-xl font-medium">journey</h3>
-      <p className="prose prose-neutral dark:prose-invert">
-        I started coding in Python{" "}
-        <Tooltip text={`${daysSinceStartedCoding} days`}>
-          <span className="underline decoration-wavy">
-            ~{yearsSinceStartedCoding}
+          <span className="nice-underline-purple-500 dark:nice-underline-purple-300">
+            all posts
           </span>
-        </Tooltip>{" "}
-        years ago at high school. In my own time, I learned (basic) web
-        development in late 2022. I now work with React, TypeScript, and
-        TailwindCSS. I also have a strong interest in cyber security, ethical
-        hacking, and the{" "}
-        <Link className="font-medium" href="/donate">
-          blockchain
+          <ArrowUpRight className="lucide lucide-arrow-up-right h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
         </Link>
-        . I&apos;ve been seriously pursuing these interests for{" "}
-        <Tooltip text={`${daysSinceSeriousAboutSWE} days`}>
-          <span className="underline decoration-wavy">
-            ~{monthsSinceSeriousAboutSWE}
-          </span>
-        </Tooltip>{" "}
-        months and would like to make them my career.
-      </p>
-      <h3 className="mt-8 text-xl font-medium">extras</h3>
-      <p className="prose prose-neutral dark:prose-invert">
-        Aside from all of that, I love to travel. I aim to visit every continent
-        at the very least. Currently, I&apos;m 3/7 of the way there.
-      </p>
+      </section>
 
-      <h3 className="mt-8 text-xl font-medium">connect</h3>
-      <p className="prose prose-neutral dark:prose-invert">
-        Contact via email at{" "}
-        <Link className="font-medium" href="mailto:hi@dann.lol">
-          hi@dann.lol
-        </Link>{" "}
-        or on signal at{" "}
-        <Link
-          className="font-medium"
-          href="https://signal.me/#eu/9ruCLvkLVNjqXtu94TW6-5BUv2BkiZRBt6YWlWCWNQeNQzYNpltGT7E2LeojN4Gu"
-        >
-          nope.01
-        </Link>
-      </p>
-      <Discord />
-      <ul className="font-sm mt-4 flex space-x-4 text-neutral-600 dark:text-neutral-300">
-        <li>
+      <section className="space-y-3">
+        <h2 className="flex items-center gap-1 text-xs font-medium uppercase tracking-[0.2em] text-neutral-600 dark:text-neutral-400">
+          <span className="text-purple-500 dark:text-purple-400">*</span>
+          <span>journey</span>
+        </h2>
+        <p className="max-w-prose text-base text-neutral-700 dark:text-neutral-300">
+          i started coding in python{" "}
+          <Tooltip text={`${daysSinceStartedCoding} days`}>
+            <span className="underline decoration-wavy decoration-purple-500 dark:decoration-purple-400">
+              ~{yearsSinceStartedCoding}
+            </span>
+          </Tooltip>{" "}
+          years ago, and started to learn web development in late 2022. now my
+          strongest interests are in cyber security, ethical hacking, and web
+          development. i&apos;ve been seriously pursuing these interests for{" "}
+          <Tooltip text={`${daysSinceSeriousAboutSWE} days`}>
+            <span className="underline decoration-wavy decoration-purple-500 dark:decoration-purple-400">
+              ~{monthsSinceSeriousAboutSWE}
+            </span>
+          </Tooltip>{" "}
+          months.
+          {/* 2022. i now work with react, typescript, and tailwindcss. i also have
+          a strong interest in cyber security, ethical hacking, and the{" "}
           <Link
-            href="https://x.com/lootings"
-            rel="noopener noreferrer"
-            target="_blank"
-            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 transition-colors"
+            className="text-purple-600 nice-underline-purple-500 dark:text-purple-300 dark:nice-underline-purple-300"
+            href="/donate"
           >
-            <BsTwitterX className="text-black dark:text-neutral-400" />
+            blockchain
           </Link>
-        </li>
-        <li>
+          . i&apos;ve been seriously pursuing these interests for{" "}
+          <Tooltip text={`${daysSinceSeriousAboutSWE} days`}>
+            <span className="underline decoration-wavy decoration-purple-500 dark:decoration-purple-400">
+              ~{monthsSinceSeriousAboutSWE}
+            </span>
+          </Tooltip>{" "}
+          months and would like to make them my career. */}
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="flex items-center gap-1 text-xs font-medium uppercase tracking-[0.2em] text-neutral-600 dark:text-neutral-400">
+          <span className="text-purple-500 dark:text-purple-400">*</span>
+          <span>connect</span>
+        </h2>
+        <p className="text-base text-neutral-700 dark:text-neutral-300">
+          contact via email at{" "}
           <Link
-            href="https://git.new/dan-"
-            rel="noopener noreferrer"
-            target="_blank"
-            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 transition-colors"
+            className="text-purple-600 nice-underline-purple-500 dark:text-purple-300 dark:nice-underline-purple-300"
+            href="mailto:hi@dann.lol"
           >
-            <FaGithub className="text-black dark:text-neutral-400" />
-          </Link>
-        </li>
-        <li>
+            hi@dann.lol
+          </Link>{" "}
+          or on signal at{" "}
           <Link
-            href="https://t.me/reIiefs"
-            rel="noopener noreferrer"
-            target="_blank"
-            className="flex items-center justify-center w-12 h-12 rounded-lg border border-neutral-500 dark:border-neutral-700 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 transition-colors"
+            className="text-purple-600 nice-underline-purple-500 dark:text-purple-300 dark:nice-underline-purple-300"
+            href="https://signal.me/#eu/9ruCLvkLVNjqXtu94TW6-5BUv2BkiZRBt6YWlWCWNQeNQzYNpltGT7E2LeojN4Gu"
           >
-            <FaTelegram className="text-black dark:text-neutral-400" />
+            nope.01
           </Link>
-        </li>
-      </ul>
-      <footer className="fixed bottom-4 right-4 text-xs text-neutral-600 dark:text-neutral-400">
+        </p>
+        <Discord />
+        <ul className="mt-2 flex gap-3 text-neutral-600 dark:text-neutral-300">
+          <li>
+            <Link
+              href="https://x.com/lootings"
+              rel="noopener noreferrer"
+              target="_blank"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-500/60 bg-neutral-100 text-neutral-800 transition-colors hover:border-purple-500 hover:bg-purple-500/10 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:border-purple-400"
+            >
+              <BsTwitterX className="h-4 w-4" />
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="https://git.new/dan-"
+              rel="noopener noreferrer"
+              target="_blank"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-500/60 bg-neutral-100 text-neutral-800 transition-colors hover:border-purple-500 hover:bg-purple-500/10 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:border-purple-400"
+            >
+              <FaGithub className="h-4 w-4" />
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="https://t.me/reIiefs"
+              rel="noopener noreferrer"
+              target="_blank"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-500/60 bg-neutral-100 text-neutral-800 transition-colors hover:border-purple-500 hover:bg-purple-500/10 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:border-purple-400"
+            >
+              <FaTelegram className="h-4 w-4" />
+            </Link>
+          </li>
+        </ul>
+      </section>
+
+      <footer className="pt-4 text-xs text-neutral-600 dark:text-neutral-500">
         <p>
           pssttt this is{" "}
           <Link
             href="https://github.com/dk-e/website"
-            className="font-medium underline decoration-neutral-400 decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600"
+            className="text-purple-600 nice-underline-purple-500 dark:text-purple-300 dark:nice-underline-purple-300"
             target="_blank"
             rel="noopener noreferrer"
           >

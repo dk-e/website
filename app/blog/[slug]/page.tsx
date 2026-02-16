@@ -16,9 +16,10 @@ const formatDate = (date: string) => {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata | undefined> {
-  const post = getBlogPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = getBlogPostBySlug(slug);
   if (!post) {
     return;
   }
@@ -52,60 +53,62 @@ export async function generateMetadata({
   };
 }
 
-export default function Post({ params }: { params: { slug: string } }) {
-  const post = getBlogPostBySlug(params.slug);
+export default async function Post({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = getBlogPostBySlug(slug);
   if (!post) {
     notFound();
   }
 
   return (
-    <body className="mx-4 mb-40 mt-8 flex max-w-2xl flex-col antialiased md:flex-row lg:mx-auto">
-      <main className="mt-6 flex min-w-0 flex-auto flex-col px-2 md:px-0">
-        <section>
-          <script
-            type="application/ld+json"
-            suppressHydrationWarning
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "BlogPosting",
-                headline: post.metadata.title,
-                datePublished: post.metadata.date,
-                dateModified: post.metadata.date,
-                description: post.metadata.description,
-                image: `https://daniel.rest/og/blog?title=${
-                  post.metadata.title
-                }&top=${formatDate(post.metadata.date)}`,
-                url: `https://daniel.rest/blog/${post.slug}`,
-                author: {
-                  "@type": "Person",
-                  name: "Dan",
-                },
-              }),
-            }}
-          />
+    <main className="space-y-8 text-left">
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.metadata.title,
+            datePublished: post.metadata.date,
+            dateModified: post.metadata.date,
+            description: post.metadata.description,
+            image: `https://daniel.rest/og/blog?title=${
+              post.metadata.title
+            }&top=${formatDate(post.metadata.date)}`,
+            url: `https://daniel.rest/blog/${post.slug}`,
+            author: {
+              "@type": "Person",
+              name: "Dan",
+            },
+          }),
+        }}
+      />
 
-          <Link
-            href="/blog"
-            className="mb-4 p-2 bg-neutral-900 text-white rounded inline-block"
-          >
-            <Undo2 className="size-5" />
-          </Link>
+      <section className="space-y-3">
+        <Link
+          href="/blog"
+          className="group inline-flex items-center gap-1 text-sm text-purple-500 transition-colors hover:text-purple-400 dark:text-purple-300 dark:hover:text-purple-200"
+        >
+          <Undo2 className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
+          <span className="nice-underline-purple-500 dark:nice-underline-purple-300">
+            back
+          </span>
+        </Link>
+      </section>
 
-          <h1 className="title mb-2 max-w-[650px] text-3xl font-medium tracking-tighter">
-            {post.metadata.title}
-          </h1>
-          <div className="mb-8 flex max-w-[650px] items-center justify-between text-sm">
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
-              {formatDate(post.metadata.date)}
-            </p>
-          </div>
+      <section className="space-y-3">
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          {post.metadata.title}
+        </h1>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          {formatDate(post.metadata.date)}
+        </p>
+      </section>
 
-          <article className="prose prose-neutral dark:prose-invert">
-            <MDX source={post.content} />
-          </article>
-        </section>
-      </main>
-    </body>
+      <article className="prose prose-neutral dark:prose-invert max-w-none">
+        <MDX source={post.content} />
+      </article>
+    </main>
   );
 }

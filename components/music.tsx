@@ -10,7 +10,7 @@ export default function Music(props: any) {
   })!;
 
   if (!lanyard || !lanyard.spotify) {
-    return null;
+    return <p className="text-sm text-neutral-600 dark:text-neutral-400"></p>;
   }
 
   return (

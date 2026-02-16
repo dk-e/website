@@ -34,19 +34,21 @@ function CustomLink({
   href,
   ...props
 }: React.ComponentProps<typeof Link> & { href: string }) {
+  const linkClassName = "text-purple-600 nice-underline-purple-500 dark:text-purple-300 dark:nice-underline-purple-300";
+  
   if (href.startsWith("/")) {
     return (
-      <Link href={href} {...props}>
+      <Link href={href} className={linkClassName} {...props}>
         {props.children}
       </Link>
     );
   }
 
   if (href.startsWith("#")) {
-    return <a {...props} />;
+    return <a className={linkClassName} {...props} />;
   }
 
-  return <a href={href} target="_blank" rel="noopener noreferrer" {...props} />;
+  return <a href={href} target="_blank" rel="noopener noreferrer" className={linkClassName} {...props} />;
 }
 
 function CustomImage(props: React.ImgHTMLAttributes<HTMLImageElement>) {
