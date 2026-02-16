@@ -4,17 +4,8 @@ export const runtime = "edge"; // or 'nodejs'
 
 export async function GET(req: NextRequest) {
   try {
-    const ip = req.headers.get("x-real-ip") || req.ip;
-
-    if (!ip) {
-      console.error("Could not determine IP address.");
-      return new NextResponse("Could not determine IP address", {
-        status: 500,
-        headers: {
-          "Content-Type": "text/plain",
-        },
-      });
-    }
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || null;
 
     return new NextResponse(ip, {
       headers: {

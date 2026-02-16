@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
       console.error("Could not determine the user-agent.");
       return NextResponse.json(
         { error: "Could not determine the user-agent" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     console.error("Error getting user-agent:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
