@@ -83,7 +83,9 @@ export default function Home() {
           check out my{" "}
           <Link
             href="https://stats.fm/warn"
-            className="text-purple-600  dark:text-purple-400 "
+            className="link-underline"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             stats.fm
           </Link>{" "}
@@ -120,9 +122,9 @@ export default function Home() {
         </div>
         <Link
           href="/blog"
-          className="group inline-flex items-center gap-1 pl-1  text-purple-500 transition-colors hover:text-purple-400 dark:text-purple-400 dark:hover:text-purple-200"
+          className="group inline-flex items-center gap-1 pl-1  text-purple-500 transition-colors dark:text-purple-400 "
         >
-          <span className=" ">all posts</span>
+          <span className="link-underline">all posts</span>
           <ArrowUpRight className="lucide lucide-arrow-up-right h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
         </Link>
       </section>
@@ -158,15 +160,12 @@ export default function Home() {
         </h2>
         <p className="text-base text-neutral-700 dark:text-neutral-300">
           contact via email at{" "}
-          <Link
-            className="text-purple-600 dark:text-purple-400 "
-            href="mailto:hi@dann.lol"
-          >
+          <Link className="link-underline" href="mailto:hi@dann.lol">
             hi@dann.lol
           </Link>{" "}
           or on signal at{" "}
           <Link
-            className="text-purple-600  dark:text-purple-400 "
+            className="link-underline"
             href="https://signal.me/#eu/9ruCLvkLVNjqXtu94TW6-5BUv2BkiZRBt6YWlWCWNQeNQzYNpltGT7E2LeojN4Gu"
           >
             nope.01
@@ -212,7 +211,7 @@ export default function Home() {
           pssttt this is{" "}
           <Link
             href="https://github.com/dk-e/website"
-            className="text-purple-600  dark:text-purple-400 "
+            className="link-underline"
             target="_blank"
             rel="noopener noreferrer"
           >

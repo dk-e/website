@@ -11,10 +11,10 @@ export default function Discord(props: any) {
   const status = lanyard?.discord_status ?? "offline";
 
   return (
-    <p className="prose prose-neutral dark:prose-invert">
+    <p>
       my discord is{" "}
       <Link
-        className="font-medium text-purple-600  dark:text-purple-400 "
+        className="link-underline"
         href="https://discord.dog/745631824163766412"
         target="_blank"
       >
