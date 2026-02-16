@@ -31,7 +31,7 @@ export default function BlogPage() {
           <Undo2 className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
           <span className=" ">back</span>
         </Link>
-        <h1 className="flex items-center gap-1 text-xs font-medium uppercase tracking-[0.2em] text-neutral-600 dark:text-neutral-400">
+        <h1 className="flex items-center gap-1 font-medium uppercase tracking-[0.2em] text-neutral-600 dark:text-neutral-400">
           <span className="text-purple-500 dark:text-purple-400">*</span>
           <span>blog</span>
         </h1>
@@ -48,10 +48,10 @@ export default function BlogPage() {
               <p className="text-base font-medium text-neutral-900 transition-colors group-hover:text-purple-600 dark:text-neutral-50 dark:group-hover:text-purple-400">
                 {post.metadata.title.toLowerCase()}
               </p>
-              <p className="text-sm text-neutral-700 dark:text-neutral-300">
+              <p className=" text-neutral-700 dark:text-neutral-300">
                 {post.metadata.description.toLowerCase()}
               </p>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400">
+              <p className=" text-xs text-neutral-500 dark:text-neutral-400">
                 {new Date(post.metadata.date)
                   .toLocaleDateString("en-US", {
                     month: "short",
