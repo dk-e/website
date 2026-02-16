@@ -53,7 +53,11 @@ export async function generateMetadata({
   };
 }
 
-export default async function Post({ params }: { params: Promise<{ slug: string }> }) {
+export default async function Post({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const post = getBlogPostBySlug(slug);
   if (!post) {
@@ -88,12 +92,10 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
       <section className="space-y-3">
         <Link
           href="/blog"
-          className="group inline-flex items-center gap-1 text-sm text-purple-500 transition-colors hover:text-purple-400 dark:text-purple-300 dark:hover:text-purple-200"
+          className="group inline-flex items-center gap-1 text-sm text-purple-500 transition-colors hover:text-purple-400 dark:text-purple-400 dark:hover:text-purple-200"
         >
           <Undo2 className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
-          <span className="nice-underline-purple-500 dark:nice-underline-purple-300">
-            back
-          </span>
+          <span className=" ">back</span>
         </Link>
       </section>
 

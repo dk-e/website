@@ -34,8 +34,8 @@ function CustomLink({
   href,
   ...props
 }: React.ComponentProps<typeof Link> & { href: string }) {
-  const linkClassName = "text-purple-600 nice-underline-purple-500 dark:text-purple-300 dark:nice-underline-purple-300";
-  
+  const linkClassName = "text-purple-600  dark:text-purple-400 ";
+
   if (href.startsWith("/")) {
     return (
       <Link href={href} className={linkClassName} {...props}>
@@ -48,7 +48,15 @@ function CustomLink({
     return <a className={linkClassName} {...props} />;
   }
 
-  return <a href={href} target="_blank" rel="noopener noreferrer" className={linkClassName} {...props} />;
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={linkClassName}
+      {...props}
+    />
+  );
 }
 
 function CustomImage(props: React.ImgHTMLAttributes<HTMLImageElement>) {
@@ -62,7 +70,7 @@ async function Pre({
 }: React.HtmlHTMLAttributes<HTMLPreElement>) {
   // extract className from the children code tag
   const codeElement = Children.toArray(children).find(
-    (child) => React.isValidElement(child) && child.type === "code"
+    (child) => React.isValidElement(child) && child.type === "code",
   ) as React.ReactElement<HTMLPreElement> | undefined;
 
   const className = codeElement?.props?.className ?? "";
@@ -114,7 +122,7 @@ function createHeading(level: number) {
           key: `link-${slug}`,
           className: "anchor",
         },
-        children
+        children,
       ),
     ]);
   };

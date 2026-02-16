@@ -83,7 +83,7 @@ export default function Home() {
           check out my{" "}
           <Link
             href="https://stats.fm/warn"
-            className="text-purple-600 nice-underline-purple-500 dark:text-purple-300 dark:nice-underline-purple-300"
+            className="text-purple-600  dark:text-purple-400 "
           >
             stats.fm
           </Link>{" "}
@@ -102,7 +102,7 @@ export default function Home() {
           {posts.map((post) => (
             <Link key={post.slug} href={`/blog/${post.slug}`}>
               <div className="group flex w-full items-baseline justify-between gap-4 px-1 py-1">
-                <p className="text-base font-medium text-neutral-900 transition-colors group-hover:text-purple-600 dark:text-neutral-50 dark:group-hover:text-purple-300">
+                <p className="text-base font-medium text-neutral-900 transition-colors group-hover:text-purple-600 dark:text-neutral-50 dark:group-hover:text-purple-400">
                   {post.metadata.title.toLowerCase()}
                 </p>
                 <p className="text-xs text-neutral-500 dark:text-neutral-400">
@@ -120,11 +120,9 @@ export default function Home() {
         </div>
         <Link
           href="/blog"
-          className="group inline-flex items-center gap-1 pl-1  text-purple-500 transition-colors hover:text-purple-400 dark:text-purple-300 dark:hover:text-purple-200"
+          className="group inline-flex items-center gap-1 pl-1  text-purple-500 transition-colors hover:text-purple-400 dark:text-purple-400 dark:hover:text-purple-200"
         >
-          <span className="nice-underline-purple-500 dark:nice-underline-purple-300">
-            all posts
-          </span>
+          <span className=" ">all posts</span>
           <ArrowUpRight className="lucide lucide-arrow-up-right h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
         </Link>
       </section>
@@ -150,21 +148,6 @@ export default function Home() {
             </span>
           </Tooltip>{" "}
           months.
-          {/* 2022. i now work with react, typescript, and tailwindcss. i also have
-          a strong interest in cyber security, ethical hacking, and the{" "}
-          <Link
-            className="text-purple-600 nice-underline-purple-500 dark:text-purple-300 dark:nice-underline-purple-300"
-            href="/donate"
-          >
-            blockchain
-          </Link>
-          . i&apos;ve been seriously pursuing these interests for{" "}
-          <Tooltip text={`${daysSinceSeriousAboutSWE} days`}>
-            <span className="underline decoration-wavy decoration-purple-500 dark:decoration-purple-400">
-              ~{monthsSinceSeriousAboutSWE}
-            </span>
-          </Tooltip>{" "}
-          months and would like to make them my career. */}
         </p>
       </section>
 
@@ -176,14 +159,14 @@ export default function Home() {
         <p className="text-base text-neutral-700 dark:text-neutral-300">
           contact via email at{" "}
           <Link
-            className="text-purple-600 nice-underline-purple-500 dark:text-purple-300 dark:nice-underline-purple-300"
+            className="text-purple-600 dark:text-purple-400 "
             href="mailto:hi@dann.lol"
           >
             hi@dann.lol
           </Link>{" "}
           or on signal at{" "}
           <Link
-            className="text-purple-600 nice-underline-purple-500 dark:text-purple-300 dark:nice-underline-purple-300"
+            className="text-purple-600  dark:text-purple-400 "
             href="https://signal.me/#eu/9ruCLvkLVNjqXtu94TW6-5BUv2BkiZRBt6YWlWCWNQeNQzYNpltGT7E2LeojN4Gu"
           >
             nope.01
@@ -229,7 +212,7 @@ export default function Home() {
           pssttt this is{" "}
           <Link
             href="https://github.com/dk-e/website"
-            className="text-purple-600 nice-underline-purple-500 dark:text-purple-300 dark:nice-underline-purple-300"
+            className="text-purple-600  dark:text-purple-400 "
             target="_blank"
             rel="noopener noreferrer"
           >
