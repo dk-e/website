@@ -27,7 +27,7 @@ export default function Music() {
         <Link
           href={data.trackUrl}
           target="_blank"
-          className="text-md font-bold hover:underline decoration-neutral-400 decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600 link-underline"
+          className="text-md font-bold link-underline"
         >
           {data.title}
         </Link>
