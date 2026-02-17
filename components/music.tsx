@@ -1,22 +1,22 @@
 "use client";
-import { useLanyardWS } from "use-lanyard";
-import { discordId } from "../lib/constants";
+import useSWR from "swr";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 
-export default function Music(props: any) {
-  const lanyard = useLanyardWS(discordId, {
-    initialData: props.lanyard,
-  })!;
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
-  if (!lanyard || !lanyard.spotify) {
-    return <p className="text-sm text-neutral-600 dark:text-neutral-400"></p>;
-  }
+export default function Music() {
+  const { data } = useSWR("/api/spotify", fetcher, {
+    refreshInterval: 10_000, // 10 s
+  });
+
+  if (!data || !data.isPlaying)
+    return <p className="text-sm text-neutral-600 dark:text-neutral-400" />;
 
   return (
     <div className="flex items-center max-w-xs">
       <Image
-        src={lanyard.spotify.album_art_url ?? ""}
+        src={data.albumImageUrl}
         width={1920}
         height={1080}
         draggable={false}
@@ -25,13 +25,13 @@ export default function Music(props: any) {
       />
       <div className="flex flex-col">
         <Link
-          href={`https://open.spotify.com/track/${lanyard.spotify.track_id}`}
+          href={data.trackUrl}
           target="_blank"
-          className="text-md font-bold hover:underline decoration-neutral-400 decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600"
+          className="text-md font-bold hover:underline decoration-neutral-400 decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600 link-underline"
         >
-          {lanyard.spotify.song}
+          {data.title}
         </Link>
-        <div className="text-sm text-gray-300">{lanyard.spotify.artist}</div>
+        <div className="text-sm text-gray-300">{data.artist}</div>
       </div>
     </div>
   );
