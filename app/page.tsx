@@ -160,8 +160,8 @@ export default function Home() {
         </h2>
         <p className="text-base text-neutral-700 dark:text-neutral-300">
           contact via email at{" "}
-          <Link className="link-underline" href="mailto:hi@dann.lol">
-            hi@dann.lol
+          <Link className="link-underline" href="mailto:d@niel.lol">
+            d@niel.lol
           </Link>{" "}
           or on signal at{" "}
           <Link
