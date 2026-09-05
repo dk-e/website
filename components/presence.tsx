@@ -1,7 +1,12 @@
 "use client";
 
 import useSWR from "swr";
-import { RelativeTimeFormatter } from "../lib/constants";
+
+// Declared here rather than imported from lib/constants: that module does
+// birthday arithmetic at import time, which would then run in every visitor's
+// browser just to borrow a formatter — and take this component down with it if
+// it ever threw.
+const relative = new Intl.RelativeTimeFormat("en", { style: "long" });
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
@@ -33,7 +38,7 @@ function lastSeenCopy(at: number) {
         ? [elapsed / HOUR, "hour" as const]
         : [elapsed / DAY, "day" as const];
 
-  return RelativeTimeFormatter.format(-Math.floor(value), unit);
+  return relative.format(-Math.floor(value), unit);
 }
 
 type Presence = {
@@ -48,14 +53,19 @@ export default function Presence() {
     keepPreviousData: true,
   });
 
-  const status = data?.status ?? "offline";
+  // Render nothing until the first fetch lands. Defaulting to "offline" meant
+  // the prerendered HTML always asserted I was offline, so a CDN-cached page,
+  // blocked JS or a quick glance showed the wrong state until SWR corrected it.
+  if (!data) return null;
+
+  const status = data.status;
 
   return (
     <p className="text-sm text-zinc-500">
       I&apos;m currently{" "}
       <span className={statusClass[status]}>{statusCopy[status]}</span>
-      {status === "online" && data?.app ? <> in {data.app}</> : null}
-      {status === "offline" && data?.lastSeen ? (
+      {status === "online" && data.app ? <> in {data.app}</> : null}
+      {status === "offline" && data.lastSeen ? (
         <>, last online {lastSeenCopy(data.lastSeen)}</>
       ) : null}
       .
