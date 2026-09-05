@@ -12,7 +12,7 @@ export const RelativeTimeFormatter = new Intl.RelativeTimeFormat("en", {
 export const discordId = "745631824163766412";
 export const discordUser = "sexuals";
 
-export const domain = "dann.lol";
+export const domain = "dann.my";
 
 export const dob = new Date("2007-02-23");
 export const age = new Date(Date.now() - dob.getTime()).getUTCFullYear() - 1970;
