@@ -1,7 +1,6 @@
 "use client";
 
 import useSWR from "swr";
-import Image from "next/image";
 import { Link } from "next-view-transitions";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
