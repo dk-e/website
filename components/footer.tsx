@@ -4,8 +4,10 @@ const linkClass =
   "lowercase transition-colors hover:text-zinc-800 dark:hover:text-zinc-300";
 
 export default function Footer() {
+  // mt-auto drops the footer to the bottom when the page is short; the gap
+  // above it is padding rather than margin so the two can coexist.
   return (
-    <footer className="mt-20 flex flex-wrap items-center justify-between gap-x-8 gap-y-3 text-sm text-zinc-500">
+    <footer className="mt-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-3 pt-20 text-sm text-zinc-500">
       <p>© {new Date().getFullYear()} Dan</p>
       <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
         <Link href="mailto:d@niel.lol" className={linkClass}>

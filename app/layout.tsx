@@ -63,7 +63,10 @@ export default function RootLayout({
           "bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100",
         )}
       >
-        <body className="mx-4 mb-24 mt-10 flex max-w-2xl flex-col antialiased md:flex-row lg:mx-auto">
+        {/* The min-height is what lets the footer sit at the bottom of a short
+            page. It subtracts the body's own mt-10 + mb-24 (2.5rem + 6rem), which
+            live outside the box, so a full-height page doesn't gain a scrollbar. */}
+        <body className="mx-4 mb-24 mt-10 flex min-h-[calc(100dvh-8.5rem)] max-w-2xl flex-col antialiased md:flex-row lg:mx-auto">
           <main className="mt-6 flex min-w-0 flex-auto flex-col px-2 md:px-0">
             {children}
             <Footer />
