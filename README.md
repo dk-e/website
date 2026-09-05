@@ -52,7 +52,3 @@ It shows up at `/blog/<filename>`.
 - `bun run build` — production build
 - `bun start` — serve the build
 - `bun run lint` — eslint
-
-## Thanks
-
-Nexxel, for [open sourcing his website](https://github.com/nexxeln/nexxel.dev) — the blog and old home page came from there.
