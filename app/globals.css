@@ -6,6 +6,10 @@ html {
   min-width: 360px;
 }
 
+::selection {
+  @apply bg-zinc-300 text-zinc-950 dark:bg-zinc-700 dark:text-zinc-50;
+}
+
 @media (prefers-color-scheme: dark) {
   .shiki,
   .shiki span {
@@ -24,8 +28,8 @@ html {
   }
 }
 
-prose a:not(.anchor) {
-  @apply decoration-neutral-400 decoration-[0.1em] underline-offset-2 dark:decoration-neutral-600;
+.prose a:not(.anchor) {
+  @apply decoration-zinc-400 decoration-[0.1em] underline-offset-2 dark:decoration-zinc-600;
 }
 
 .prose a.anchor {
@@ -40,8 +44,12 @@ prose a:not(.anchor) {
   @apply opacity-100;
 }
 
+.font-serif {
+  font-family: var(--font-serif), ui-serif, Georgia, serif;
+}
+
 .prose pre {
-  @apply overflow-x-auto rounded-lg border border-neutral-200 bg-neutral-50 dark:border-neutral-900 dark:bg-neutral-900;
+  @apply overflow-x-auto rounded-md border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900;
 }
 
 .prose code {
@@ -58,10 +66,17 @@ prose a:not(.anchor) {
   @apply font-medium;
 }
 
-/* universal nice underline */
 .link-underline {
-  @apply text-purple-600 dark:text-purple-400
-         transition-colors
-         hover:nice-underline-purple-500
-         dark:hover:nice-underline-purple-400;
+  @apply text-zinc-900 underline decoration-zinc-400 decoration-[1px] underline-offset-[3px]
+         transition-colors hover:decoration-zinc-900
+         dark:text-zinc-100 dark:decoration-zinc-500 dark:hover:decoration-zinc-200;
+}
+
+.section-kicker {
+  @apply text-[11px] font-medium uppercase tracking-[0.22em] text-zinc-500;
+}
+
+.nav-back {
+  @apply inline-flex items-center gap-1 text-sm text-zinc-500 transition-colors
+         hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100;
 }

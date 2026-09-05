@@ -1,45 +1,33 @@
 "use client";
 import { useLanyardWS } from "use-lanyard";
-import { discordId, discordUser } from "../lib/constants";
-import Link from "next/link";
+import { discordId } from "../lib/constants";
 
-export default function Discord(props: any) {
+const statusCopy = {
+  dnd: "in dnd",
+  idle: "idle",
+  online: "online",
+  offline: "offline",
+} as const;
+
+const statusClass = {
+  dnd: "text-red-800/80 dark:text-red-400/70",
+  idle: "text-amber-800/80 dark:text-amber-400/70",
+  online: "text-emerald-800/80 dark:text-emerald-400/70",
+  offline: "",
+} as const;
+
+export default function Discord(props: { lanyard?: unknown }) {
   const lanyard = useLanyardWS(discordId, {
-    initialData: props.lanyard,
-  })!;
+    initialData: props.lanyard as never,
+  });
 
-  const status = lanyard?.discord_status ?? "offline";
+  const status = (lanyard?.discord_status ??
+    "offline") as keyof typeof statusCopy;
 
   return (
-    <p>
-      my discord is{" "}
-      <Link
-        className="link-underline"
-        href="https://discord.dog/745631824163766412"
-        target="_blank"
-      >
-        @{lanyard?.discord_user.username || `${discordUser}`}
-      </Link>{" "}
-      - i&apos;m currently{" "}
-      <span
-        className={
-          {
-            dnd: "text-red-600 dark:text-red-400",
-            idle: "text-amber-500",
-            online: "text-green-500",
-            offline: "text-blurple",
-          }[status]
-        }
-      >
-        {
-          {
-            dnd: "in dnd",
-            idle: "idle",
-            online: "online",
-            offline: "offline",
-          }[status]
-        }
-      </span>
+    <p className="text-sm text-zinc-500">
+      I&apos;m currently{" "}
+      <span className={statusClass[status]}>{statusCopy[status]}</span>.
     </p>
   );
 }

@@ -34,7 +34,8 @@ function CustomLink({
   href,
   ...props
 }: React.ComponentProps<typeof Link> & { href: string }) {
-  const linkClassName = "text-purple-600  dark:text-purple-400 ";
+  const linkClassName =
+    "text-zinc-900 underline decoration-zinc-400 decoration-[1px] underline-offset-[3px] dark:text-zinc-100 dark:decoration-zinc-500";
 
   if (href.startsWith("/")) {
     return (

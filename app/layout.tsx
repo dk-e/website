@@ -1,26 +1,37 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { IBM_Plex_Sans, IBM_Plex_Serif } from "next/font/google";
 import "./globals.css";
 import { ViewTransitions } from "next-view-transitions";
 import { clx } from "../lib/utils";
+import Footer from "../components/footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const sans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-sans",
+});
+
+const serif = IBM_Plex_Serif({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+  variable: "--font-serif",
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://daniel.rest"),
+  metadataBase: new URL("https://dann.my"),
   title: {
     default: "Dan",
     template: "%s | Dan",
   },
-  description: "Developer | 🧑‍💻",
+  description: "Cyber security student.",
   openGraph: {
     title: "Dan",
-    description: "Developer | 🧑‍💻",
-    url: "https://daniel.rest",
+    description: "Cyber security student.",
+    url: "https://dann.my",
     siteName: "Dan",
     locale: "en_US",
     type: "website",
-    images: ["https://daniel.rest/og/home"],
+    images: ["https://dann.my/og/home"],
   },
   robots: {
     index: true,
@@ -46,13 +57,16 @@ export default function RootLayout({
       <html
         lang="en"
         className={clx(
-          inter.className,
-          "bg-neutral-100 text-black dark:bg-neutral-950 dark:text-white"
+          sans.variable,
+          serif.variable,
+          sans.className,
+          "bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100",
         )}
       >
-        <body className="mx-4 mb-40 mt-8 flex max-w-2xl flex-col antialiased md:flex-row lg:mx-auto">
+        <body className="mx-4 mb-24 mt-10 flex max-w-2xl flex-col antialiased md:flex-row lg:mx-auto">
           <main className="mt-6 flex min-w-0 flex-auto flex-col px-2 md:px-0">
             {children}
+            <Footer />
           </main>
         </body>
       </html>
