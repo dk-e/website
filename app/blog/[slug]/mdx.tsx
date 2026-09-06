@@ -4,32 +4,6 @@ import React from "react";
 import { Children, createElement } from "react";
 import { codeToHtml } from "shiki";
 
-function Table({ data }: { data: { headers: string[]; rows: string[][] } }) {
-  let headers = data.headers.map((header, index) => (
-    <th key={index} className="p-2 text-left">
-      {header}
-    </th>
-  ));
-  let rows = data.rows.map((row, index) => (
-    <tr key={index}>
-      {row.map((cell, cellIndex) => (
-        <td key={cellIndex} className="p-2 text-left">
-          {cell}
-        </td>
-      ))}
-    </tr>
-  ));
-
-  return (
-    <table className="w-full border-collapse">
-      <thead>
-        <tr>{headers}</tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </table>
-  );
-}
-
 function CustomLink({
   href,
   ...props
@@ -141,7 +115,6 @@ const components = {
   h5: createHeading(5),
   h6: createHeading(6),
   pre: Pre,
-  Table,
 };
 
 export function MDX(props: any) {

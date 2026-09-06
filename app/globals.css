@@ -22,12 +22,6 @@ html {
   }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
 .prose a:not(.anchor) {
   @apply decoration-zinc-400 decoration-[0.1em] underline-offset-2 dark:decoration-zinc-600;
 }
