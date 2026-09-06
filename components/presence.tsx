@@ -2,10 +2,6 @@
 
 import useSWR from "swr";
 
-// Declared here rather than imported from lib/constants: that module does
-// birthday arithmetic at import time, which would then run in every visitor's
-// browser just to borrow a formatter — and take this component down with it if
-// it ever threw.
 const relative = new Intl.RelativeTimeFormat("en", { style: "long" });
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
