@@ -1,8 +1,16 @@
 "use client";
 import confetti from "canvas-confetti";
+import type { PointerEvent } from "react";
 
 const ConfettiText = ({ text, emoji, scalar = 1 }: any) => {
-  const handleMouseEnter = () => {
+  const handlePointerEnter = (event: PointerEvent<HTMLSpanElement>) => {
+    if (
+      event.pointerType !== "mouse" ||
+      !window.matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)").matches
+    ) {
+      return;
+    }
+
     const emojiShape = confetti.shapeFromText({
       text: emoji,
       scalar,
@@ -17,7 +25,7 @@ const ConfettiText = ({ text, emoji, scalar = 1 }: any) => {
     });
   };
 
-  return <span onMouseEnter={handleMouseEnter}>{text}</span>;
+  return <span onPointerEnter={handlePointerEnter}>{text}</span>;
 };
 
 export default ConfettiText;
