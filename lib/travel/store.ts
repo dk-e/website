@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
-import { INITIAL_PASSPORT, parseLatestCountry, parseVisits } from "./model";
+import { INITIAL_PASSPORT } from "./model";
+import { parseLatestCountry, parseVisits } from "./validation";
 import type { Passport, Visit } from "./model";
 
 const key = process.env.TRAVEL_REDIS_KEY || "travel:passport:v1";

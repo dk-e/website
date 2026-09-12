@@ -3,10 +3,9 @@ import assert from "node:assert/strict";
 import {
   countryByCode,
   INITIAL_PASSPORT,
-  parseLatestCountry,
-  parseVisits,
   travelStats,
 } from "../lib/travel/model";
+import { parseLatestCountry, parseVisits } from "../lib/travel/validation";
 import shapes from "../data/travel-map.json";
 import {
   checkPassword,
