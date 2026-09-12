@@ -5,6 +5,7 @@ import ConfettiText from "../components/confetti";
 import Music from "../components/music";
 import { ArrowUpRight } from "lucide-react";
 import Presence from "../components/presence";
+import Travel from "../components/travel";
 
 export default function Home() {
   const posts = getBlogPosts()
@@ -79,6 +80,7 @@ export default function Home() {
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
       </section>
+      <Travel />
     </main>
   );
 }

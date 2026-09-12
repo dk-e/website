@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "travel:password": "bun scripts/travel-password.ts",
+    "travel:map": "bun scripts/generate-travel-map.ts",
+    "test:travel": "bun test tests/travel.test.ts"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.13",
@@ -21,6 +24,7 @@
     "swr": "^2.4.0"
   },
   "devDependencies": {
+    "@types/bun": "^1.4.2",
     "@types/canvas-confetti": "^1.6.4",
     "@types/node": "^20.14.10",
     "@types/react": "^19.0.0",
