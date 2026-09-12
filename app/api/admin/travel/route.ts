@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAdmin, sameOrigin } from "../../../../lib/travel/auth";
-import { parseLatestCountry, parseVisits } from "../../../../lib/travel/model";
+import { parseTravelUpdate } from "../../../../lib/travel/validation";
 import { readPassport, savePassport } from "../../../../lib/travel/store";
 
 const headers = { "Cache-Control": "no-store" };
@@ -35,18 +35,11 @@ export async function PUT(request: Request) {
       },
       { status: 401, headers },
     );
-  let revision: string;
-  let visits;
-  let latestCountry: string;
+  let update: ReturnType<typeof parseTravelUpdate>;
   try {
     const raw = await request.text();
     if (raw.length > 250_000) throw new Error("Your passport is too large.");
-    const body = JSON.parse(raw);
-    if (typeof body.revision !== "string" || body.revision.length > 64)
-      throw new Error("Invalid revision. Reload your visits.");
-    revision = body.revision;
-    visits = parseVisits(body.visits);
-    latestCountry = parseLatestCountry(body.latestCountry, visits);
+    update = parseTravelUpdate(JSON.parse(raw));
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Invalid passport." },
@@ -54,7 +47,11 @@ export async function PUT(request: Request) {
     );
   }
   try {
-    const passport = await savePassport(revision, visits, latestCountry);
+    const passport = await savePassport(
+      update.revision,
+      update.visits,
+      update.latestCountry,
+    );
     if (!passport)
       return NextResponse.json(
         {
