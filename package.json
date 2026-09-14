@@ -27,7 +27,7 @@
   "devDependencies": {
     "@types/bun": "^1.4.2",
     "@types/canvas-confetti": "^1.6.4",
-    "@types/node": "^20.14.10",
+    "@types/node": "^26.5.1",
     "@types/react": "^19.0.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "^16.0.0",
