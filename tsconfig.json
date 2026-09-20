@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["bun", "node", "react"],
     "lib": [
       "dom",
       "dom.iterable",
