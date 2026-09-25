@@ -1,7 +1,7 @@
 import { Link } from "next-view-transitions";
 import { getBlogPosts } from "../lib/blog";
 import { age } from "../lib/constants";
-import ConfettiText from "../components/confetti";
+import FallingFlags from "../components/falling-flags";
 import Music from "../components/music";
 import { ArrowUpRight } from "lucide-react";
 import Presence from "../components/presence";
@@ -36,7 +36,7 @@ export default function Home() {
             I&apos;m interested in the web, cybercrime and love to travel.
             I&apos;m based in the{" "}
             <span className="text-zinc-800 underline decoration-zinc-400 underline-offset-2 dark:text-zinc-200 dark:decoration-zinc-500">
-              <ConfettiText text="UK" emoji="🇬🇧" scalar={5} />
+              <FallingFlags text="UK" emoji="🇬🇧" />
             </span>
             .
           </p>

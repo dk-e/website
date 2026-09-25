@@ -48,10 +48,6 @@ export default function Presence() {
     refreshInterval: 30_000,
     keepPreviousData: true,
   });
-
-  // Render nothing until the first fetch lands. Defaulting to "offline" meant
-  // the prerendered HTML always asserted I was offline, so a CDN-cached page,
-  // blocked JS or a quick glance showed the wrong state until SWR corrected it.
   if (!data) return null;
 
   const status = data.status;
