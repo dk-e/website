@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import type { KeyboardEvent, PointerEvent } from "react";
 import useSWR from "swr";
 import {
   ArrowDownRight,
   ArrowUpRight,
   ChevronDown,
   Globe2,
+  Minus,
+  Plus,
+  RotateCcw,
 } from "lucide-react";
 import shapes from "../data/travel-map.json";
 import {
@@ -19,6 +23,31 @@ import type { Passport } from "../lib/travel/model";
 
 type PublicPassport = Pick<Passport, "visits" | "latestCountry">;
 
+const MAP = { x: 18, y: 8, width: 687, height: 308 };
+const ZOOM_LEVELS = [1, 1.6, 2.5, 4, 6];
+const INITIAL_VIEW = {
+  level: 0,
+  centerX: MAP.x + MAP.width / 2,
+  centerY: MAP.y + MAP.height / 2,
+};
+
+function clampView(view: typeof INITIAL_VIEW) {
+  const zoom = ZOOM_LEVELS[view.level] ?? 1;
+  const halfWidth = MAP.width / zoom / 2;
+  const halfHeight = MAP.height / zoom / 2;
+  return {
+    ...view,
+    centerX: Math.min(
+      MAP.x + MAP.width - halfWidth,
+      Math.max(MAP.x + halfWidth, view.centerX),
+    ),
+    centerY: Math.min(
+      MAP.y + MAP.height - halfHeight,
+      Math.max(MAP.y + halfHeight, view.centerY),
+    ),
+  };
+}
+
 async function fetcher(url: string): Promise<PublicPassport> {
   const response = await fetch(url);
   if (!response.ok)
@@ -28,6 +57,90 @@ async function fetcher(url: string): Promise<PublicPassport> {
 
 export function PassportCard({ passport }: { passport: PublicPassport }) {
   const [expanded, setExpanded] = useState(false);
+  const [mapView, setMapView] = useState(INITIAL_VIEW);
+  const [dragging, setDragging] = useState(false);
+  const dragStart = useRef<{
+    pointerId: number;
+    x: number;
+    y: number;
+    centerX: number;
+    centerY: number;
+  } | null>(null);
+  const zoom = ZOOM_LEVELS[mapView.level] ?? 1;
+  const viewWidth = MAP.width / zoom;
+  const viewHeight = MAP.height / zoom;
+
+  function changeZoom(step: number) {
+    setMapView((current) =>
+      clampView({
+        ...current,
+        level: Math.max(
+          0,
+          Math.min(ZOOM_LEVELS.length - 1, current.level + step),
+        ),
+      }),
+    );
+  }
+
+  function startDrag(event: PointerEvent<SVGSVGElement>) {
+    if (
+      mapView.level === 0 ||
+      (event.pointerType === "mouse" && event.button !== 0)
+    ) return;
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    dragStart.current = {
+      pointerId: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      centerX: mapView.centerX,
+      centerY: mapView.centerY,
+    };
+    setDragging(true);
+  }
+
+  function moveDrag(event: PointerEvent<SVGSVGElement>) {
+    const start = dragStart.current;
+    if (!start || start.pointerId !== event.pointerId) return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    setMapView((current) =>
+      clampView({
+        ...current,
+        centerX: start.centerX - ((event.clientX - start.x) / bounds.width) * viewWidth,
+        centerY: start.centerY - ((event.clientY - start.y) / bounds.height) * viewHeight,
+      }),
+    );
+  }
+
+  function stopDrag() {
+    dragStart.current = null;
+    setDragging(false);
+  }
+
+  function panWithKeyboard(event: KeyboardEvent<SVGSVGElement>) {
+    if (mapView.level === 0) return;
+    const offsets: Record<string, [number, number]> = {
+      ArrowLeft: [-viewWidth / 5, 0],
+      ArrowRight: [viewWidth / 5, 0],
+      ArrowUp: [0, -viewHeight / 5],
+      ArrowDown: [0, viewHeight / 5],
+    };
+    if (event.key === "Escape") {
+      setMapView(INITIAL_VIEW);
+      return;
+    }
+    const offset = offsets[event.key];
+    if (!offset) return;
+    event.preventDefault();
+    setMapView((current) =>
+      clampView({
+        ...current,
+        centerX: current.centerX + offset[0],
+        centerY: current.centerY + offset[1],
+      }),
+    );
+  }
+
   const { visited, continents, latest } = travelStats(
     passport.visits,
     passport.latestCountry,
@@ -53,10 +166,18 @@ export function PassportCard({ passport }: { passport: PublicPassport }) {
 
       <div className="px-1 pb-3 pt-3">
         <svg
-          viewBox="18 8 687 308"
+          viewBox={`${mapView.centerX - viewWidth / 2} ${mapView.centerY - viewHeight / 2} ${viewWidth} ${viewHeight}`}
           role="img"
           aria-label={`World map showing ${visited.length} visited countries: ${sorted.map((code) => countryByCode.get(code)?.name).join(", ") || "none yet"}`}
-          className="block h-auto w-full"
+          aria-describedby="passport-map-help"
+          tabIndex={mapView.level > 0 ? 0 : -1}
+          onPointerDown={startDrag}
+          onPointerMove={moveDrag}
+          onPointerUp={stopDrag}
+          onPointerCancel={stopDrag}
+          onLostPointerCapture={stopDrag}
+          onKeyDown={panWithKeyboard}
+          className={`block h-auto w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 ${mapView.level > 0 ? "cursor-grab touch-none" : ""} ${dragging ? "cursor-grabbing" : ""}`}
         >
           <g
             strokeWidth="0.45"
@@ -81,6 +202,50 @@ export function PassportCard({ passport }: { passport: PublicPassport }) {
             ))}
           </g>
         </svg>
+        <div className="mt-1 flex items-center justify-between gap-2 px-4 sm:px-5">
+          <p id="passport-map-help" className="text-[10px] text-zinc-500">
+            {mapView.level > 0
+              ? "Drag to move · arrow keys when focused"
+              : "Zoom in to explore the map"}
+          </p>
+          <div
+            role="group"
+            aria-label="Map zoom controls"
+            className="flex shrink-0 items-center gap-1"
+          >
+            <button
+              type="button"
+              onClick={() => changeZoom(-1)}
+              disabled={mapView.level === 0}
+              aria-label="Zoom out"
+              className="flex h-8 w-8 items-center justify-center rounded-md border border-zinc-200 text-zinc-600 transition-colors hover:bg-zinc-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            >
+              <Minus aria-hidden="true" className="h-3.5 w-3.5" />
+            </button>
+            <span className="w-9 text-center text-[10px] tabular-nums text-zinc-500">
+              {zoom}×
+            </span>
+            <button
+              type="button"
+              onClick={() => changeZoom(1)}
+              disabled={mapView.level === ZOOM_LEVELS.length - 1}
+              aria-label="Zoom in"
+              className="flex h-8 w-8 items-center justify-center rounded-md border border-zinc-200 text-zinc-600 transition-colors hover:bg-zinc-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            >
+              <Plus aria-hidden="true" className="h-3.5 w-3.5" />
+            </button>
+            {mapView.level > 0 && (
+              <button
+                type="button"
+                onClick={() => setMapView(INITIAL_VIEW)}
+                aria-label="Reset map"
+                className="flex h-8 w-8 items-center justify-center rounded-md border border-zinc-200 text-zinc-600 transition-colors hover:bg-zinc-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              >
+                <RotateCcw aria-hidden="true" className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
+        </div>
         <div className="mt-1 flex justify-end gap-3 px-4 text-[10px] text-zinc-500 sm:px-5">
           <span className="flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 rounded-full bg-blue-500 dark:bg-blue-400" />
