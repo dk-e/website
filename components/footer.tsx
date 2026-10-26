@@ -11,7 +11,7 @@ export default function Footer() {
       <p>© {new Date().getFullYear()} Dan</p>
       <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
         <Link href="mailto:d@niel.lol" className={linkClass}>
-          d@niel.lol
+          hi@dann.my
         </Link>
         <a
           href="https://git.new/dan-"
