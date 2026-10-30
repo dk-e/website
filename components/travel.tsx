@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { KeyboardEvent, PointerEvent as ReactPointerEvent } from "react";
 import useSWR from "swr";
 import {
@@ -40,6 +40,7 @@ function PassportMap({
   visited: string[];
   sorted: string[];
 }) {
+  const instructionsId = useId();
   const svgRef = useRef<SVGSVGElement>(null);
   const viewRef = useRef<MapView>(WORLD_VIEW);
   const pointers = useRef(new Map<number, MapPoint>());
@@ -47,23 +48,29 @@ function PassportMap({
 
   const updateView = useCallback((next: (current: MapView) => MapView) => {
     const updated = clampMapView(next(viewRef.current));
+    const current = viewRef.current;
+    if (updated.x === current.x && updated.y === current.y &&
+        updated.width === current.width && updated.height === current.height) return;
     viewRef.current = updated;
     setView(updated);
   }, []);
 
   const zoomAt = useCallback(
-    (clientX: number, clientY: number, factor: number) => {
+    (clientX: number, clientY: number, factor: number, destination?: MapPoint) => {
+      if (!Number.isFinite(factor) || factor <= 0) return;
       const rect = svgRef.current?.getBoundingClientRect();
       if (!rect || !rect.width || !rect.height) return;
-      const nx = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-      const ny = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
+      const nx = (clientX - rect.left) / rect.width;
+      const ny = (clientY - rect.top) / rect.height;
+      const targetX = destination ? (destination.x - rect.left) / rect.width : nx;
+      const targetY = destination ? (destination.y - rect.top) / rect.height : ny;
       updateView((current) => {
         const zoom = Math.max(1, Math.min(MAX_ZOOM, (WORLD_VIEW.width / current.width) * factor));
         const width = WORLD_VIEW.width / zoom;
         const height = WORLD_VIEW.height / zoom;
         return {
-          x: current.x + nx * current.width - nx * width,
-          y: current.y + ny * current.height - ny * height,
+          x: current.x + nx * current.width - targetX * width,
+          y: current.y + ny * current.height - targetY * height,
           width,
           height,
         };
@@ -117,6 +124,7 @@ function PassportMap({
 
   const onPointerDown = (event: ReactPointerEvent<SVGSVGElement>) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
+    if (pointers.current.size >= 2) return;
     pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
     event.currentTarget.setPointerCapture(event.pointerId);
   };
@@ -136,21 +144,7 @@ function PassportMap({
       const oldDistance = Math.hypot(previous.x - other.x, previous.y - other.y);
       const newDistance = Math.hypot(current.x - other.x, current.y - other.y);
       if (!oldDistance) return;
-      updateView((view) => {
-        const zoom = Math.max(1, Math.min(MAX_ZOOM, (WORLD_VIEW.width / view.width) * (newDistance / oldDistance)));
-        const width = WORLD_VIEW.width / zoom;
-        const height = WORLD_VIEW.height / zoom;
-        const oldX = (oldMid.x - rect.left) / rect.width;
-        const oldY = (oldMid.y - rect.top) / rect.height;
-        const newX = (newMid.x - rect.left) / rect.width;
-        const newY = (newMid.y - rect.top) / rect.height;
-        return {
-          x: view.x + oldX * view.width - newX * width,
-          y: view.y + oldY * view.height - newY * height,
-          width,
-          height,
-        };
-      });
+      zoomAt(oldMid.x, oldMid.y, newDistance / oldDistance, newMid);
     } else {
       updateView((view) => ({
         ...view,
@@ -165,6 +159,7 @@ function PassportMap({
   };
 
   const onKeyDown = (event: KeyboardEvent<SVGSVGElement>) => {
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
     const rect = event.currentTarget.getBoundingClientRect();
     switch (event.key) {
       case "+":
@@ -199,7 +194,7 @@ function PassportMap({
 
   return (
     <>
-      <span id="passport-map-instructions" className="sr-only">
+      <span id={instructionsId} className="sr-only">
         Pinch to zoom and drag to move the map. With the map focused, use plus and minus to zoom, arrow keys to move, and Escape to reset.
       </span>
       <svg
@@ -207,13 +202,14 @@ function PassportMap({
         viewBox={`${view.x} ${view.y} ${view.width} ${view.height}`}
         role="img"
         tabIndex={0}
-        aria-describedby="passport-map-instructions"
+        aria-describedby={instructionsId}
         aria-label={`World map showing ${visited.length} visited countries: ${sorted.map((code) => countryByCode.get(code)?.name).join(", ") || "none yet"}`}
         className="block h-auto w-full touch-none cursor-grab active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerEnd}
         onPointerCancel={onPointerEnd}
+        onLostPointerCapture={onPointerEnd}
         onKeyDown={onKeyDown}
       >
         <g
