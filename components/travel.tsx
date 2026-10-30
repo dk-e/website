@@ -1,16 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
-import type { KeyboardEvent, PointerEvent } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { KeyboardEvent, PointerEvent as ReactPointerEvent } from "react";
 import useSWR from "swr";
 import {
   ArrowDownRight,
   ArrowUpRight,
   ChevronDown,
   Globe2,
-  Minus,
-  Plus,
-  RotateCcw,
 } from "lucide-react";
 import shapes from "../data/travel-map.json";
 import {
@@ -22,30 +19,228 @@ import {
 import type { Passport } from "../lib/travel/model";
 
 type PublicPassport = Pick<Passport, "visits" | "latestCountry">;
+type MapView = { x: number; y: number; width: number; height: number };
+type MapPoint = { x: number; y: number };
 
-const MAP = { x: 18, y: 8, width: 687, height: 308 };
-const ZOOM_LEVELS = [1, 1.6, 2.5, 4, 6];
-const INITIAL_VIEW = {
-  level: 0,
-  centerX: MAP.x + MAP.width / 2,
-  centerY: MAP.y + MAP.height / 2,
-};
+const WORLD_VIEW: MapView = { x: 18, y: 8, width: 687, height: 308 };
+const MAX_ZOOM = 8;
 
-function clampView(view: typeof INITIAL_VIEW) {
-  const zoom = ZOOM_LEVELS[view.level] ?? 1;
-  const halfWidth = MAP.width / zoom / 2;
-  const halfHeight = MAP.height / zoom / 2;
+function clampMapView(view: MapView): MapView {
   return {
     ...view,
-    centerX: Math.min(
-      MAP.x + MAP.width - halfWidth,
-      Math.max(MAP.x + halfWidth, view.centerX),
-    ),
-    centerY: Math.min(
-      MAP.y + MAP.height - halfHeight,
-      Math.max(MAP.y + halfHeight, view.centerY),
-    ),
+    x: Math.max(WORLD_VIEW.x, Math.min(view.x, WORLD_VIEW.x + WORLD_VIEW.width - view.width)),
+    y: Math.max(WORLD_VIEW.y, Math.min(view.y, WORLD_VIEW.y + WORLD_VIEW.height - view.height)),
   };
+}
+
+function PassportMap({
+  visited,
+  sorted,
+}: {
+  visited: string[];
+  sorted: string[];
+}) {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const viewRef = useRef<MapView>(WORLD_VIEW);
+  const pointers = useRef(new Map<number, MapPoint>());
+  const [view, setView] = useState<MapView>(WORLD_VIEW);
+
+  const updateView = useCallback((next: (current: MapView) => MapView) => {
+    const updated = clampMapView(next(viewRef.current));
+    viewRef.current = updated;
+    setView(updated);
+  }, []);
+
+  const zoomAt = useCallback(
+    (clientX: number, clientY: number, factor: number) => {
+      const rect = svgRef.current?.getBoundingClientRect();
+      if (!rect || !rect.width || !rect.height) return;
+      const nx = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      const ny = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
+      updateView((current) => {
+        const zoom = Math.max(1, Math.min(MAX_ZOOM, (WORLD_VIEW.width / current.width) * factor));
+        const width = WORLD_VIEW.width / zoom;
+        const height = WORLD_VIEW.height / zoom;
+        return {
+          x: current.x + nx * current.width - nx * width,
+          y: current.y + ny * current.height - ny * height,
+          width,
+          height,
+        };
+      });
+    },
+    [updateView],
+  );
+
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+
+    // Trackpad pinches arrive as Ctrl+wheel in Chromium/Firefox and gesture events in Safari.
+    const onWheel = (event: WheelEvent) => {
+      if (!event.ctrlKey) return;
+      event.preventDefault();
+      zoomAt(event.clientX, event.clientY, Math.exp(-event.deltaY * 0.01));
+    };
+    type SafariGesture = Event & { scale: number; clientX?: number; clientY?: number };
+    let previousGestureScale = 1;
+    const onGestureStart = (event: Event) => {
+      event.preventDefault();
+      previousGestureScale = 1;
+    };
+    const onGestureChange = (event: Event) => {
+      event.preventDefault();
+      const gesture = event as SafariGesture;
+      // iOS may also dispatch pointer events for the same pinch.
+      if (pointers.current.size >= 2) {
+        previousGestureScale = gesture.scale;
+        return;
+      }
+      const rect = svg.getBoundingClientRect();
+      zoomAt(
+        gesture.clientX ?? rect.left + rect.width / 2,
+        gesture.clientY ?? rect.top + rect.height / 2,
+        gesture.scale / previousGestureScale,
+      );
+      previousGestureScale = gesture.scale;
+    };
+
+    svg.addEventListener("wheel", onWheel, { passive: false });
+    svg.addEventListener("gesturestart", onGestureStart, { passive: false });
+    svg.addEventListener("gesturechange", onGestureChange, { passive: false });
+    return () => {
+      svg.removeEventListener("wheel", onWheel);
+      svg.removeEventListener("gesturestart", onGestureStart);
+      svg.removeEventListener("gesturechange", onGestureChange);
+    };
+  }, [zoomAt]);
+
+  const onPointerDown = (event: ReactPointerEvent<SVGSVGElement>) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const onPointerMove = (event: ReactPointerEvent<SVGSVGElement>) => {
+    const previous = pointers.current.get(event.pointerId);
+    if (!previous) return;
+    const current = { x: event.clientX, y: event.clientY };
+    const other = [...pointers.current.entries()].find(([id]) => id !== event.pointerId)?.[1];
+    pointers.current.set(event.pointerId, current);
+    const rect = event.currentTarget.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    if (other) {
+      const oldMid = { x: (previous.x + other.x) / 2, y: (previous.y + other.y) / 2 };
+      const newMid = { x: (current.x + other.x) / 2, y: (current.y + other.y) / 2 };
+      const oldDistance = Math.hypot(previous.x - other.x, previous.y - other.y);
+      const newDistance = Math.hypot(current.x - other.x, current.y - other.y);
+      if (!oldDistance) return;
+      updateView((view) => {
+        const zoom = Math.max(1, Math.min(MAX_ZOOM, (WORLD_VIEW.width / view.width) * (newDistance / oldDistance)));
+        const width = WORLD_VIEW.width / zoom;
+        const height = WORLD_VIEW.height / zoom;
+        const oldX = (oldMid.x - rect.left) / rect.width;
+        const oldY = (oldMid.y - rect.top) / rect.height;
+        const newX = (newMid.x - rect.left) / rect.width;
+        const newY = (newMid.y - rect.top) / rect.height;
+        return {
+          x: view.x + oldX * view.width - newX * width,
+          y: view.y + oldY * view.height - newY * height,
+          width,
+          height,
+        };
+      });
+    } else {
+      updateView((view) => ({
+        ...view,
+        x: view.x - ((current.x - previous.x) / rect.width) * view.width,
+        y: view.y - ((current.y - previous.y) / rect.height) * view.height,
+      }));
+    }
+  };
+
+  const onPointerEnd = (event: ReactPointerEvent<SVGSVGElement>) => {
+    pointers.current.delete(event.pointerId);
+  };
+
+  const onKeyDown = (event: KeyboardEvent<SVGSVGElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    switch (event.key) {
+      case "+":
+      case "=":
+        zoomAt(rect.left + rect.width / 2, rect.top + rect.height / 2, 1.5);
+        break;
+      case "-":
+      case "_":
+        zoomAt(rect.left + rect.width / 2, rect.top + rect.height / 2, 1 / 1.5);
+        break;
+      case "0":
+      case "Escape":
+        updateView(() => WORLD_VIEW);
+        break;
+      case "ArrowLeft":
+        updateView((current) => ({ ...current, x: current.x - current.width * 0.1 }));
+        break;
+      case "ArrowRight":
+        updateView((current) => ({ ...current, x: current.x + current.width * 0.1 }));
+        break;
+      case "ArrowUp":
+        updateView((current) => ({ ...current, y: current.y - current.height * 0.1 }));
+        break;
+      case "ArrowDown":
+        updateView((current) => ({ ...current, y: current.y + current.height * 0.1 }));
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+  };
+
+  return (
+    <>
+      <span id="passport-map-instructions" className="sr-only">
+        Pinch to zoom and drag to move the map. With the map focused, use plus and minus to zoom, arrow keys to move, and Escape to reset.
+      </span>
+      <svg
+        ref={svgRef}
+        viewBox={`${view.x} ${view.y} ${view.width} ${view.height}`}
+        role="img"
+        tabIndex={0}
+        aria-describedby="passport-map-instructions"
+        aria-label={`World map showing ${visited.length} visited countries: ${sorted.map((code) => countryByCode.get(code)?.name).join(", ") || "none yet"}`}
+        className="block h-auto w-full touch-none cursor-grab active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerEnd}
+        onPointerCancel={onPointerEnd}
+        onKeyDown={onKeyDown}
+      >
+        <g
+          strokeWidth="0.45"
+          strokeLinejoin="round"
+          className="stroke-white dark:stroke-zinc-900"
+        >
+          {shapes.map((shape) => (
+            <path
+              key={shape.code}
+              d={shape.path}
+              className={
+                visited.includes(shape.code)
+                  ? "fill-blue-500 dark:fill-blue-400"
+                  : "fill-zinc-200 dark:fill-zinc-700/80"
+              }
+            >
+              <title>
+                {countryByCode.get(shape.code)?.name ?? ""}
+                {visited.includes(shape.code) ? " · visited" : ""}
+              </title>
+            </path>
+          ))}
+        </g>
+      </svg>
+    </>
+  );
 }
 
 async function fetcher(url: string): Promise<PublicPassport> {
@@ -57,90 +252,6 @@ async function fetcher(url: string): Promise<PublicPassport> {
 
 export function PassportCard({ passport }: { passport: PublicPassport }) {
   const [expanded, setExpanded] = useState(false);
-  const [mapView, setMapView] = useState(INITIAL_VIEW);
-  const [dragging, setDragging] = useState(false);
-  const dragStart = useRef<{
-    pointerId: number;
-    x: number;
-    y: number;
-    centerX: number;
-    centerY: number;
-  } | null>(null);
-  const zoom = ZOOM_LEVELS[mapView.level] ?? 1;
-  const viewWidth = MAP.width / zoom;
-  const viewHeight = MAP.height / zoom;
-
-  function changeZoom(step: number) {
-    setMapView((current) =>
-      clampView({
-        ...current,
-        level: Math.max(
-          0,
-          Math.min(ZOOM_LEVELS.length - 1, current.level + step),
-        ),
-      }),
-    );
-  }
-
-  function startDrag(event: PointerEvent<SVGSVGElement>) {
-    if (
-      mapView.level === 0 ||
-      (event.pointerType === "mouse" && event.button !== 0)
-    ) return;
-    event.preventDefault();
-    event.currentTarget.setPointerCapture(event.pointerId);
-    dragStart.current = {
-      pointerId: event.pointerId,
-      x: event.clientX,
-      y: event.clientY,
-      centerX: mapView.centerX,
-      centerY: mapView.centerY,
-    };
-    setDragging(true);
-  }
-
-  function moveDrag(event: PointerEvent<SVGSVGElement>) {
-    const start = dragStart.current;
-    if (!start || start.pointerId !== event.pointerId) return;
-    const bounds = event.currentTarget.getBoundingClientRect();
-    setMapView((current) =>
-      clampView({
-        ...current,
-        centerX: start.centerX - ((event.clientX - start.x) / bounds.width) * viewWidth,
-        centerY: start.centerY - ((event.clientY - start.y) / bounds.height) * viewHeight,
-      }),
-    );
-  }
-
-  function stopDrag() {
-    dragStart.current = null;
-    setDragging(false);
-  }
-
-  function panWithKeyboard(event: KeyboardEvent<SVGSVGElement>) {
-    if (mapView.level === 0) return;
-    const offsets: Record<string, [number, number]> = {
-      ArrowLeft: [-viewWidth / 5, 0],
-      ArrowRight: [viewWidth / 5, 0],
-      ArrowUp: [0, -viewHeight / 5],
-      ArrowDown: [0, viewHeight / 5],
-    };
-    if (event.key === "Escape") {
-      setMapView(INITIAL_VIEW);
-      return;
-    }
-    const offset = offsets[event.key];
-    if (!offset) return;
-    event.preventDefault();
-    setMapView((current) =>
-      clampView({
-        ...current,
-        centerX: current.centerX + offset[0],
-        centerY: current.centerY + offset[1],
-      }),
-    );
-  }
-
   const { visited, continents, latest } = travelStats(
     passport.visits,
     passport.latestCountry,
@@ -165,87 +276,7 @@ export function PassportCard({ passport }: { passport: PublicPassport }) {
       </div>
 
       <div className="px-1 pb-3 pt-3">
-        <svg
-          viewBox={`${mapView.centerX - viewWidth / 2} ${mapView.centerY - viewHeight / 2} ${viewWidth} ${viewHeight}`}
-          role="img"
-          aria-label={`World map showing ${visited.length} visited countries: ${sorted.map((code) => countryByCode.get(code)?.name).join(", ") || "none yet"}`}
-          aria-describedby="passport-map-help"
-          tabIndex={mapView.level > 0 ? 0 : -1}
-          onPointerDown={startDrag}
-          onPointerMove={moveDrag}
-          onPointerUp={stopDrag}
-          onPointerCancel={stopDrag}
-          onLostPointerCapture={stopDrag}
-          onKeyDown={panWithKeyboard}
-          className={`block h-auto w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 ${mapView.level > 0 ? "cursor-grab touch-none" : ""} ${dragging ? "cursor-grabbing" : ""}`}
-        >
-          <g
-            strokeWidth="0.45"
-            strokeLinejoin="round"
-            className="stroke-white dark:stroke-zinc-900"
-          >
-            {shapes.map((shape) => (
-              <path
-                key={shape.code}
-                d={shape.path}
-                className={
-                  visited.includes(shape.code)
-                    ? "fill-blue-500 dark:fill-blue-400"
-                    : "fill-zinc-200 dark:fill-zinc-700/80"
-                }
-              >
-                <title>
-                  {countryByCode.get(shape.code)?.name ?? ""}
-                  {visited.includes(shape.code) ? " · visited" : ""}
-                </title>
-              </path>
-            ))}
-          </g>
-        </svg>
-        <div className="mt-1 flex items-center justify-between gap-2 px-4 sm:px-5">
-          <p id="passport-map-help" className="text-[10px] text-zinc-500">
-            {mapView.level > 0
-              ? "Drag to move · arrow keys when focused"
-              : "Zoom in to explore the map"}
-          </p>
-          <div
-            role="group"
-            aria-label="Map zoom controls"
-            className="flex shrink-0 items-center gap-1"
-          >
-            <button
-              type="button"
-              onClick={() => changeZoom(-1)}
-              disabled={mapView.level === 0}
-              aria-label="Zoom out"
-              className="flex h-8 w-8 items-center justify-center rounded-md border border-zinc-200 text-zinc-600 transition-colors hover:bg-zinc-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
-            >
-              <Minus aria-hidden="true" className="h-3.5 w-3.5" />
-            </button>
-            <span className="w-9 text-center text-[10px] tabular-nums text-zinc-500">
-              {zoom}×
-            </span>
-            <button
-              type="button"
-              onClick={() => changeZoom(1)}
-              disabled={mapView.level === ZOOM_LEVELS.length - 1}
-              aria-label="Zoom in"
-              className="flex h-8 w-8 items-center justify-center rounded-md border border-zinc-200 text-zinc-600 transition-colors hover:bg-zinc-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
-            >
-              <Plus aria-hidden="true" className="h-3.5 w-3.5" />
-            </button>
-            {mapView.level > 0 && (
-              <button
-                type="button"
-                onClick={() => setMapView(INITIAL_VIEW)}
-                aria-label="Reset map"
-                className="flex h-8 w-8 items-center justify-center rounded-md border border-zinc-200 text-zinc-600 transition-colors hover:bg-zinc-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
-              >
-                <RotateCcw aria-hidden="true" className="h-3.5 w-3.5" />
-              </button>
-            )}
-          </div>
-        </div>
+        <PassportMap visited={visited} sorted={sorted} />
         <div className="mt-1 flex justify-end gap-3 px-4 text-[10px] text-zinc-500 sm:px-5">
           <span className="flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 rounded-full bg-blue-500 dark:bg-blue-400" />
