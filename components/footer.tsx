@@ -10,7 +10,7 @@ export default function Footer() {
     <footer className="mt-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-3 pt-20 text-sm text-zinc-500">
       <p>© {new Date().getFullYear()} Dan</p>
       <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
-        <Link href="mailto:d@niel.lol" className={linkClass}>
+        <Link href="mailto:hi@dann.my" className={linkClass}>
           hi@dann.my
         </Link>
         <a
