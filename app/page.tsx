@@ -6,6 +6,8 @@ import Music from "../components/music";
 import { ArrowUpRight } from "lucide-react";
 import Presence from "../components/presence";
 import Travel from "../components/travel";
+import { Suspense } from "react";
+import { AllRepositoriesLink, RepositoryList } from "../components/repositories";
 
 export default function Home() {
   const posts = getBlogPosts()
@@ -79,6 +81,13 @@ export default function Home() {
           <span>All posts</span>
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
+      </section>
+      <section aria-labelledby="repositories-title" className="space-y-4">
+        <h2 id="repositories-title" className="section-kicker">repositories</h2>
+        <Suspense fallback={<p role="status" className="text-sm text-zinc-500">Loading repositories…</p>}>
+          <RepositoryList />
+        </Suspense>
+        <AllRepositoriesLink />
       </section>
       <Travel />
     </main>

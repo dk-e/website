@@ -47,6 +47,10 @@ date: "August 12, 2024"
 
 It shows up at `/blog/<filename>`.
 
+## GitHub repositories
+
+The homepage shows three public repos, ordered by most recent push, excluding forks, with an optional pinned repo first. GitHub data refreshes hourly and needs no token. In `lib/github.ts`, change `pinnedRepository` to a non-fork repo name to pin it, or `null` to show the latest three without a pin. It currently pins `website`. The pinned repo takes one of the three slots and is never duplicated. If GitHub is unavailable, the section keeps a link to all repositories.
+
 ## Scripts
 
 - `bun dev` — dev server
